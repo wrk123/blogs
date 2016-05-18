@@ -28,7 +28,7 @@ public class LoginController {
 	@Autowired
 	SessionTokenRepository authTokenDAO;
 	
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	//private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	private ResponseEntity<User> loginUser(@RequestBody User userLogin)throws Exception{
@@ -41,19 +41,18 @@ public class LoginController {
 		if(!user.getPassword().equals(userLogin.getPassword())){
 			return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 		}
-		log.debug("<<<< Line 44 >>>> :: User object validation done ");
+		
 		
 		SessionToken userSession=null;
 		userSession=authTokenDAO.findByUserId(user.getId());
-		log.debug("<<<< Line 48 >>>> :: User object validation done ");
+		
 	
 		if(userSession.getAuthToken()!=null){
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}
 	
 		validateToken(userSession,user);
-		log.debug("<<<< Line 57 >>>> :: User object validation done ");
-		return new ResponseEntity<User>(user,HttpStatus.OK);		
+			return new ResponseEntity<User>(user,HttpStatus.OK);		
 	
 	}
 	
@@ -78,7 +77,7 @@ public class LoginController {
 	void invalidateToken(SessionToken userSession,User user){
 		userSession.setAuthToken(null);
 		try{  authTokenDAO.save(userSession);	
-			System.out.println(">>>>>>>>>>>>>> Logging out user. ");}
+			}
 		catch(Exception e) {   e.printStackTrace();  }
 	} 
 	
@@ -86,8 +85,7 @@ public class LoginController {
 		userSession.setAuthToken(user.hashCode());		
 		userSession.setLastModifiedTime(new Date());
 		try{		authTokenDAO.save(userSession);
-				System.out.println(">>>>>>>>>>>>>>>> Logging in user.");
-		}
+			}
 		catch(Exception e){    
 			System.out.println("Exception occured while logging in ::::");
 			e.printStackTrace();  }

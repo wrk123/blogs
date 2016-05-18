@@ -44,10 +44,7 @@ public class BlogController {
 	public @ResponseBody ResponseEntity<List<Blog>> fetchAllblogs()throws Exception{
 		
 		List<Blog> blogs=(List<Blog>) blogRepo.findAll();
-		/*for(Blog blog : blogs)
-			blog.setReview(reviewRepo.findByBlogId(blog.getBlogId()));		
-		*/
-		return new ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
+			return new ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
 	}
 	
 	//for posting a new blog
@@ -83,7 +80,7 @@ public class BlogController {
 					else	
 						blogDetails.setIsActive(false);
 					
-					System.out.println(">>>>> Blog details creation time value ["+blogDetails.toString()+"]");					
+									
 					blogDetails.setPublishTime(publishDate);
 					blogDetails.setUser(user);
 					blogRepo.save(blogDetails);

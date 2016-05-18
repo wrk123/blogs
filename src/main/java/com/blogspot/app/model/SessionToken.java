@@ -32,7 +32,7 @@ public class SessionToken {
 	
 	private Integer authToken;
 	
-	//@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id",insertable=false, updatable=false)
 	private User userObj;

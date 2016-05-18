@@ -52,11 +52,7 @@ public class UserController {
 		User user=null;
 		SessionToken userSession=null;		
 		
-		//for checking existing email 
-		user=userDAO.findByEmail(userDetails.getEmail());
-		if(user!=null){
-			return new ResponseEntity<User>(HttpStatus.CONFLICT);
-		}
+		
 		//for checking update user 
 		user=userDAO.findOne(userDetails.getId());
 		if (user==null){
@@ -66,6 +62,7 @@ public class UserController {
 				userSession=new SessionToken(user.getId());
 				
 				userDAO.save(user);
+				userSession.setUserId(user.getId());
 				authTokenDAO.save(userSession);
 				
 				}catch(Exception e){

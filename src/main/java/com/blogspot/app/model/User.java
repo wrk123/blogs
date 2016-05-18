@@ -55,13 +55,7 @@ public class User implements Serializable{
 	  private String password;
 	  
 	  private Integer credit; 
-	/* 	  
-	  @OneToMany(targetEntity=Blog.class,mappedBy="user",cascade=CascadeType.ALL)
-	  private List<Blog> blog;
-	*/  
-	 /* @OneToOne(mappedBy="userObj",cascade=CascadeType.ALL)//,insertable=false, updatable=false)
-	  private SessionToken sessionUser;
-	 */ 
+	
 	  public User() {
 		// TODO Auto-generated constructor stub
 	  }
@@ -81,10 +75,6 @@ public class User implements Serializable{
 	}
 
 	 
-
-	/*public User(SessionToken sessionUser) {
-		this.sessionUser = sessionUser;
-	}*/
 
 	public long getId() {
 			return id;
@@ -145,23 +135,7 @@ public class User implements Serializable{
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-/*
-		public List<Blog> getBlog() {
-			return blog;
-		}
-
-		public void setBlog(List<Blog> blog) {
-			this.blog = blog;
-		}
-
-*/		/*public SessionToken getSessionUser() {
-			return sessionUser;
-		}
-
-		public void setSessionUser(SessionToken sessionUser) {
-			this.sessionUser = sessionUser;
-		}*/
-
+		
 		public Integer getCredit() {
 			return credit;
 		}
