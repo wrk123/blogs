@@ -14,19 +14,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.blogspot.app.serializer.IdentifiableJsonSerializer;
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "blog_details")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "blogId")
-@JsonIdentityReference(alwaysAsId = true) 
 public class Blog {
 
 	@Id
@@ -177,8 +176,10 @@ public class Blog {
 		this.user = user;
 	}
 	
-	/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "review_id")
-	@JsonIdentityReference(alwaysAsId = true)*/
+	@JsonProperty(value = "review")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "comments")
+	@JsonIdentityReference(alwaysAsId = true)
+	//@JsonSerialize(using = IdentifiableJsonSerializer.class)
 	public List<Review> getReview() {
 		return review;
 	}

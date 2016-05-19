@@ -3,6 +3,8 @@ package com.blogspot.app.controller;
 
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.blogspot.app.model.User;
 import com.blogspot.app.model.Blog;
 import com.blogspot.app.model.Review;
@@ -38,10 +40,11 @@ public class BlogController {
 	@Autowired
 	ReviewRepository reviewRepo;
 	
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	//for fetching all blogs on like of a comment
 	@RequestMapping(value="/home",method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<List<Blog>> fetchAllblogs()throws Exception{
+	public @ResponseBody ResponseEntity<List<Blog>> fetchAllblogs(){
 		
 		List<Blog> blogs=(List<Blog>) blogRepo.findAll();
 			return new ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
@@ -49,7 +52,7 @@ public class BlogController {
 	
 	//for posting a new blog
 	@RequestMapping(value="/blogpost",method=RequestMethod.POST)
-	public @ResponseBody ResponseEntity<Blog> createBlog(@RequestBody Blog blogDetails)	throws Exception{
+	public @ResponseBody ResponseEntity<Blog> createBlog(@RequestBody Blog blogDetails){
 		User user=null;
 		
 		Blog blogs=null;
@@ -73,7 +76,7 @@ public class BlogController {
 				{	//for existing blog
 					blogs=blogRepo.findOne(blogDetails.getBlogId());
 					if(blogs==null){
-						throw new Exception(" Cannot update blog. Blog not found in the database. !!!");
+						return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 					}
 					if(!blogDetails.getDraft())
 						publishDate =new Date();
@@ -109,9 +112,9 @@ public class BlogController {
 		
 		Review comment=null;
 		if(user.getCredit()<50)
-			throw new Exception("You are not allowed to comment as your credit score is less than 50 !!!");
+			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
-		//for updating credit of the user who created the  blog
+			//for updating credit of the user who created the  blog
 		user=userDAO.findById(blogs.getUserId());
 		
 		int score=user.getCredit()+15;				// add the credit 
@@ -135,11 +138,11 @@ public class BlogController {
 		
 		blogs=blogRepo.findOne(blogId);
 		if(blogs==null){
-			throw new Exception("Blog does not exists !!");
+			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 					
 		if(user.getCredit()<50)
-			throw new Exception("You are not allowed to like as your credit score is less than 50 !!!");
+			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 		//for updating credit of the user who created the  blog
 		user=userDAO.findById(blogs.getUserId());
@@ -156,7 +159,7 @@ public class BlogController {
 	
 	//for dislike a blog
 	@RequestMapping(value="/user/{userId}/blogpost/{blogId}/dislike",method=RequestMethod.DELETE)
-	public @ResponseBody ResponseEntity<Blog> dislikeBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId)	throws Exception{
+	public @ResponseBody ResponseEntity<Blog> dislikeBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId){
 		Blog blogs=null;
 		User user=null;
 		user=userDAO.findById(userId);
@@ -165,11 +168,11 @@ public class BlogController {
 		
 		blogs=blogRepo.findOne(blogId);
 		if(blogs==null){
-			throw new Exception("Blog does not exists !!");
+			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 			
 		if(user.getCredit()<50)
-			throw new Exception("You are not allowed to dislike as your credit score is less than 50 !!!");
+			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 		
 		//for updating credit of the user who created the  blog
@@ -196,7 +199,7 @@ public class BlogController {
 	
 	//for making post inActive by the user
 	@RequestMapping(value="/user/{userId}/blogpost/{userBlogId}/isActive/",method=RequestMethod.DELETE)
-	public @ResponseBody ResponseEntity<Blog> markBlogInactive(@PathVariable Long userId, @PathVariable Long userBlogId)throws Exception{
+	public @ResponseBody ResponseEntity<Blog> markBlogInactive(@PathVariable Long userId, @PathVariable Long userBlogId){
 		User user=null;
 		Blog blogs = null;
 		user=userDAO.findById(userId);
@@ -214,7 +217,7 @@ public class BlogController {
 				blogs.setIsActive(false);
 		}
 		else 
-		  throw new Exception(" You are not allowed to delete other's blog. ");
+			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 			
 		blogRepo.save(blogs);
 		

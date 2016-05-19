@@ -17,14 +17,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
 @Table(name="review_blogs")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "reviewId")
-@JsonIdentityReference(alwaysAsId = true) 
 public class Review {
 
 	@Id
@@ -102,6 +101,9 @@ public class Review {
 		this.blogId = blogId;
 	}
 
+	@JsonProperty(value = "review")
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "reviewId")
+	@JsonIdentityReference(alwaysAsId = true) 
 	public Blog getBlog() {
 		return blog;
 	}
