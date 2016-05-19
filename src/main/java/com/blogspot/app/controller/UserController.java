@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blogspot.app.model.Blog;
+import com.blogspot.app.model.Review;
 import com.blogspot.app.model.SessionToken;
 import com.blogspot.app.model.User;
 import com.blogspot.app.repository.BlogRepository;
 import com.blogspot.app.repository.ReviewRepository;
 import com.blogspot.app.repository.SessionTokenRepository;
 import com.blogspot.app.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -146,7 +148,7 @@ public class UserController {
 		User user = null;
 
 		List<Blog> blogs = null;
-
+        
 		user = userDAO.findOne(userId);
 		if (user == null) {
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
@@ -155,10 +157,10 @@ public class UserController {
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 
 		blogs = blogRepo.findByUserId(user.getId());
-			
+			    
 		for (Blog blog : blogs) // get the comments for each blog
 			blog.setReview(reviewRepo.findByBlogIdOrderByCreationTimeDesc(blog.getBlogId()));
-			
+		
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
 	

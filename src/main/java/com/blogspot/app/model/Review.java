@@ -12,14 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 
 @Entity
 @Table(name="review_blogs")
@@ -45,7 +39,6 @@ public class Review {
 
 	@ManyToOne
 	@JoinColumn(name="blog_id", updatable= false, insertable=false)
-	//@JsonManagedReference
 	private Blog blog;
 	
 	public Review() {
@@ -83,8 +76,6 @@ public class Review {
 		this.creationTime = creationTime;
 	}
 
-	
-	
 	public Long getUserId() {
 		return userId;
 	}
@@ -101,9 +92,7 @@ public class Review {
 		this.blogId = blogId;
 	}
 
-	@JsonProperty(value = "review")
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "reviewId")
-	@JsonIdentityReference(alwaysAsId = true) 
+	@JsonIgnore
 	public Blog getBlog() {
 		return blog;
 	}

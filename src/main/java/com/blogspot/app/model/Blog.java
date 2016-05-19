@@ -14,15 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.blogspot.app.serializer.IdentifiableJsonSerializer;
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "blog_details")
@@ -57,12 +48,10 @@ public class Blog {
 	private boolean isActive;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", insertable = false, updatable = false)
-	//@JsonManagedReference
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)	
 	private User user;
 	
 	@OneToMany(mappedBy = "blogId")
-	//@JsonBackReference 
 	private List<Review> review;
 
 	public Blog() {
@@ -166,8 +155,6 @@ public class Blog {
 	}
 	
 	
-	/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "blogId")
-	@JsonIdentityReference(alwaysAsId = true)*/	
 	public User getUser() {
 		return user;
 	}
@@ -176,10 +163,6 @@ public class Blog {
 		this.user = user;
 	}
 	
-	@JsonProperty(value = "review")
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "comments")
-	@JsonIdentityReference(alwaysAsId = true)
-	//@JsonSerialize(using = IdentifiableJsonSerializer.class)
 	public List<Review> getReview() {
 		return review;
 	}
