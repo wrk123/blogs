@@ -45,13 +45,6 @@ public class UserController {
 	
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	@RequestMapping(value="/",method=RequestMethod.GET)
-	public  ModelAndView home(){
-
-    	ModelAndView model = new ModelAndView("/jsp/index.jsp");
-    	return model;
-	}
-	
 	/* User related operations */
 	
 	//Method for creating users 

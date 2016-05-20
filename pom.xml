@@ -79,6 +79,29 @@
 	    	<artifactId>neo4j-cypher-compiler-2.2</artifactId>
 	    	<version>2.2.5</version>
 	    </dependency>
+	    <dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>jstl</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- Dependency for rendering jsp pages  -->
+		<dependency>
+		    <groupId>tomcat</groupId>
+		    <artifactId>jasper-compiler</artifactId>
+		    <version>5.5.23</version>
+		</dependency>
+		<dependency>
+		    <groupId>tomcat</groupId>
+		    <artifactId>jasper-runtime</artifactId>
+		    <version>5.5.23</version>
+		</dependency>
+		<dependency>
+		    <groupId>tomcat</groupId>
+		    <artifactId>jasper-compiler-jdt</artifactId>
+		    <version>5.5.23</version>
+		</dependency>
+		<!-- Dependency for rendering jsp pages  -->
   </dependencies>
   
   <build>

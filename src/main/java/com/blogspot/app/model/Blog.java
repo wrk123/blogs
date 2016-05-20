@@ -54,7 +54,7 @@ public class Blog {
 	@OneToMany(mappedBy = "blogId")
 	private List<Review> review;
 
-	public Blog() {
+	public  Blog() {
 		// TODO Auto-generated constructor stub
 	}
 
