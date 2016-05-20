@@ -2,6 +2,7 @@ package com.blogspot.app.controller;
 
 import java.util.List;
 import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.blogspot.app.model.Blog;
 import com.blogspot.app.model.Review;
@@ -44,10 +46,11 @@ public class UserController {
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping(value="/",method=RequestMethod.GET)
-	public @ResponseBody String welcome(){
-		return "Welcome to  the blogspot.";
+	public  ModelAndView home(){
+
+    	ModelAndView model = new ModelAndView("/jsp/index.jsp");
+    	return model;
 	}
-	
 	
 	/* User related operations */
 	
@@ -186,7 +189,7 @@ public class UserController {
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
 	
-	//user filter for month based blogposts
+	//user filter for year based blogposts
 	@RequestMapping(value="/user/{userId}/blogpost/year",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getYearlyBlog(@PathVariable Long userId){
 	User user=null;
@@ -207,7 +210,6 @@ public class UserController {
 		}
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
-	
 	
 	//checking whether user has logged in or not 
 	boolean checkUserAuth(User user){

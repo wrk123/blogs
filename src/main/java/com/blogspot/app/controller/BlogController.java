@@ -46,7 +46,7 @@ public class BlogController {
 	@RequestMapping(value="/home",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> fetchAllblogs(){
 		
-		List<Blog> blogs=(List<Blog>) blogRepo.findByIsActive(true);
+		List<Blog> blogs=(List<Blog>) blogRepo.findByIsActiveOrderByCreationTimeDesc(true);
 			
 			return new ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
 	}
@@ -216,6 +216,8 @@ public class BlogController {
 		if(blogs.getUserId()==user.getId())
 		{	if(blogs.getIsActive())
 				blogs.setIsActive(false);
+			else
+				blogs.setIsActive(true);
 		}
 		else 
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
