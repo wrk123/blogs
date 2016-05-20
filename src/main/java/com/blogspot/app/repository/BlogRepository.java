@@ -13,6 +13,8 @@ public interface BlogRepository extends CrudRepository<Blog, Long>{
 
 	List<Blog> findByUserId(Long userId);
 	
+	List<Blog> findByIsActive(boolean isActive);
+	
 	List<Blog> findAllByUserIdOrderByCreationTimeDesc(Long userId);
 	
 	List<Blog> findByUserIdOrderByCreationTimeDesc(Long userId);

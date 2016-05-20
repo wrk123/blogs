@@ -46,7 +46,8 @@ public class BlogController {
 	@RequestMapping(value="/home",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> fetchAllblogs(){
 		
-		List<Blog> blogs=(List<Blog>) blogRepo.findAll();
+		List<Blog> blogs=(List<Blog>) blogRepo.findByIsActive(true);
+			
 			return new ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
 	}
 	
