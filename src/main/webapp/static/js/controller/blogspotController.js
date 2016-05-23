@@ -11,7 +11,7 @@ blogspot.controller('blogController',function($scope,$http){
 
 	
 	$scope.addBlog = function addBlog() {
-		$http.post(urlBase + '/blogpost/'+$scope.blog)
+		$http.post(urlBase + '/blogpost/',$scope.blog)
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
@@ -52,14 +52,16 @@ blogspot.controller('blogController',function($scope,$http){
 	};
 	
 	$scope.commentOnBlog = function login() {
-		$http.post(urlBase + '/auth/login/'+$scope.user)
+		console.log("Inside login method !!!");
+		$http.post(urlBase + '/auth/login/',$scope.user)
 	 	.success(function(data) {
-	 		$scope.blog = data; 
+	 		$scope.user = data;
+	 		window.location="/jsp/main.jsp";
 	 	});
 	};
 	
 	$scope.commentOnBlog = function logout() {
-		$http.post(urlBase + '/auth/logout/'+$scope.user)
+		$http.post(urlBase + '/auth/logout/',$scope.user)
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	});

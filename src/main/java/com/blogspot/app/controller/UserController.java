@@ -2,6 +2,7 @@ package com.blogspot.app.controller;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,9 +51,15 @@ public class UserController {
 	//Method for creating users 
 	@RequestMapping(value="/user",method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<User> createUser(@RequestBody User userDetails) throws Exception{
-		User user=null;
+		Optional<User> users=null;
+		User user =null;
 		SessionToken userSession=null;		
 		
+		//checking for same email present in the database
+		//users=userDAO.findByEmail(userDetails.getEmail());
+		if(user!=null){
+			return new ResponseEntity<User>(HttpStatus.CONFLICT);
+		}
 		
 		//for checking update user 
 		user=userDAO.findOne(userDetails.getId());
