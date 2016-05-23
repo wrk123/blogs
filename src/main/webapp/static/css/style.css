@@ -1,14 +1,22 @@
-/* table, th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
-}
-table tr:nth-child(odd)	{
-  background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
-  background-color: #ffffff;
-}
- */
- 
  body { padding-top:50px; }
+ 
+ //login
+.modal-body .form-horizontal .col-sm-2,
+.modal-body .form-horizontal .col-sm-10 {
+    width: 100%
+}
+
+.modal-body .form-horizontal .control-label {
+    text-align: left;
+}
+.modal-body .form-horizontal .col-sm-offset-2 {
+    margin-left: 15px;
+}
+
+//for text area in create blogs  
+html, body, .container {
+  height: 50%;
+}
+textarea.form-control {
+  height: 50%;
+}
