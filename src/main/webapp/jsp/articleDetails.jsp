@@ -46,7 +46,87 @@ pageEncoding="ISO-8859-1"%>
 				</nav>
 			</div>
 		</header>
-		
-		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8">
+					<article>
+						<a href="/jsp/articleDetails.jsp?{{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
+				        <div class="row">
+				          	<div class="col-sm-6 col-md-6">author -
+				          	<em>	{{ blogs.user.name }} </em>
+				          	</div>
+				          	<div class="col-sm-6 col-md-6">
+				          		<a href="/jsp/articleDetails.jsp?{{ blogs.blogId }}"><span class="glyphicon glyphicon-pencil"></span></a>
+				          		&nbsp;&nbsp;  	{{ blogs.review.length }} Comments	          		
+				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blogs.creationTime | date:'medium'}}			          		
+				          	</div>
+				          </div>
+				          <hr>
+	                      <br />		        
+						  	 <p>{{ blogs.blogContent}}</p> 
+				          <hr>
+					</article>	
+					<ul class="pager">
+						<li class="previous"><a href="/jsp/home.jsp">&larr; Back to posts</a></li>
+					</ul>	
+				<!-- Comment form -->
+					<div class="well">
+						<h4>Leave a comment</h4>
+						<form role="form" class="clearfix">
+						  <div class="col-md-6 form-group">
+						    <label class="sr-only" for="name">Name</label>
+						    <input type="text" class="form-control" id="name" placeholder="Name">
+						  </div>
+						  <div class="col-md-6 form-group">
+						    <label class="sr-only" for="email">Email</label>
+						    <input type="email" class="form-control" id="email" placeholder="Email">
+						  </div>
+						  <div class="col-md-12 form-group">
+						    <label class="sr-only" for="email">Comment</label>
+						    <textarea class="form-control" id="comment" placeholder="Comment"></textarea>
+						  </div>
+						  <div class="col-md-12 form-group text-right">
+						  	<button type="submit" class="btn btn-primary">Submit</button>
+						  </div>
+						</form>					
+					</div>
+
+					<hr />
+				<!-- Displays the latest comments on the blog  -->
+					<ul id="comments" class="comments">
+						<li class="comment">
+							<div class="clearfix">
+								<h4 class="pull-left">John</h4>
+								<p class="pull-right">9:41 PM on August 24, 2013</p>
+							</div>
+							<p>
+								<em>I don't believe in astrology but still your writing style is really great!</em>
+							</p>
+						</li>
+
+						<li class="comment clearfix">
+							<div class="clearfix">
+								<h4 class="pull-left">John</h4>
+								<p class="pull-right">9:41 PM on August 24, 2013</p>
+							</div>
+							<p>
+								<em>I don't believe in astrology but still your writing style is really great!</em>
+							</p>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-4">
+					<!-- Latest Posts -->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Latest Posts</h4>
+						</div>
+						<ul class="list-group" ng-repeat="blogs in blog | limitTo:5 ">
+							<li class="list-group-item"><a href="#">{{blogs.blogTitle}}</li>
+						</ul>
+					</div>			
+				</div>
+			</div>
+		</div>	
 	</body>
 </html>
