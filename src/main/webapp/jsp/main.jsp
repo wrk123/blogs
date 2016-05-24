@@ -19,13 +19,14 @@ pageEncoding="ISO-8859-1"%>
 		<script type="text/javascript" src="../static/js/controller/blogspotController.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
 	</head>
 	<body ng-controller="usersController">
 	<!-- Header -->
 		 <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">			
 			<div class="container">
 				<div class="navbar-header">		
-					<a href="/jsp/index.jsp" class="navbar-brand">Bloggers Point</a>
+					<a href="/" class="navbar-brand">Bloggers Point</a>
 				</div>				 
 			</div>
 		</header>
@@ -35,12 +36,12 @@ pageEncoding="ISO-8859-1"%>
 		<!-------->
 		<div id="content">			
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
-		        <li><a href="#profile" data-toggle="tab">Profile</a></li>
-		        <li><a href="#ViewBlogs" data-toggle="tab">View Blogs</a></li>
-		        <li><a href="#CreateBlogs" data-toggle="tab">Create Blog</a></li>
+		        <li><a href="#profile" data-toggle="tab" ng-click="">Profile</a></li>
+		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="">View Blogs</a></li>
+		        <li><a href="#CreateBlogs" data-toggle="tab" ng-click="">Create Blog</a></li>
 		        <form class="navbar-form navbar-right">
 					<div class="form-group">
-						<h4> Welcome  User name  {{user.name }} ! &nbsp; &nbsp;<i class="fa fa-user" aria-hidden="true"></i></h4>      
+						<h4> Welcome  {{ users.name }} ! &nbsp; &nbsp;<i class="fa fa-user" aria-hidden="true"></i></h4>      
 					</div></form>
 		    </ul>
 		    <div id="my-tab-content" class="tab-content">        
@@ -48,16 +49,16 @@ pageEncoding="ISO-8859-1"%>
 		            <h2>Profile Details</h2>
 				    <table class="table table-bordered table-striped container">
 						<tr>
-							<td>Name: </td><td>{{ user.name }}</td>
+							<td>Name: </td><td>{{ users.name }}</td>
 						</tr>
 						<tr>
-							<td>Email:</td><td>{{ user.email }}</td>
+							<td>Email:</td><td>{{ users.email }}</td>
 						</tr>
 						<tr>
-							<td>Contact:</td><td>{{user.contact}}</td>
+							<td>Contact:</td><td>{{users.contact}}</td>
 						</tr>
 						<tr>
-							<td>Credits: </td><td>{{ user.credit }}</td>
+							<td>Credits: </td><td>{{ users.credit }}</td>
 						</tr>						
 					</table><br/>
 					<button class="btn btn-primary"> Edit </button>
@@ -122,7 +123,7 @@ pageEncoding="ISO-8859-1"%>
 		</div>
 	</div> <!-- container -->
 		
-	
+	<!--for tab operations  -->
 		<script type="text/javascript">
 		    jQuery(document).ready(function ($) {
 		        $('#tabs').tab();

@@ -10,7 +10,7 @@ pageEncoding="ISO-8859-1"%>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="../static/css/style.css" rel="stylesheet" type="text/css"/>
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> 
 		<link href="../static/css/blog.css" rel="stylesheet" />  
 		<script type="text/javascript" src="../static/js/angular.js"></script>
@@ -30,7 +30,7 @@ pageEncoding="ISO-8859-1"%>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a href="index.html" class="navbar-brand">Bloggers Point</a>
+					<a href="/" class="navbar-brand">Bloggers Point</a>
 				</div>
 				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 					<form class="navbar-form navbar-right" role="search">

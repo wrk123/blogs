@@ -4,7 +4,7 @@ pageEncoding="ISO-8859-1"%>
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html ng-app="userApp">
-	<head>
+	<head >
 		<title>Blogs </title>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,8 +19,9 @@ pageEncoding="ISO-8859-1"%>
 		<script type="text/javascript" src="../static/js/controller/blogspotController.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
 	</head>
-	<body ng-controller="usersController">
+	<body  ng-controller="usersController">
 	<div class="container" ng-show="toggle" >
 	<h2 class="page-title">Welcome to the blogs.</h2>
 		<h3> Please select the below options to continue</h3><br/>
@@ -58,7 +59,7 @@ pageEncoding="ISO-8859-1"%>
 					<td><input type="password" ng-model="user.password" required /></td>
 				</tr>					
 			</table><br/><br/><br/><br/>		
-			<a href="/jsp/index.jsp"><button class="btn btn-info"> Back </button></a>&nbsp;&nbsp;
+			<a href="/"><button class="btn btn-info"> Back </button></a>&nbsp;&nbsp;
 			<button ng-click="addUser()" class="btn btn-primary">Create New User</button>						
 		</div>
 	</div> 
@@ -69,17 +70,18 @@ pageEncoding="ISO-8859-1"%>
 	      <div class="modal-content">
 	        <div class="modal-header">
 	          <button type="button" class="close" data-dismiss="modal">&times;</button>
-	          <h4 class="modal-title">Please enter the details </h4>
+	          <h4 class="modal-title">Log In</h4>
 	        </div>
 	        <div class="modal-body">
-	        	<label class="col-sm-2 control-label" >Email</label>
-	        	<input type="email" class="form-control"  ng-model="user.email" placeholder="Email"/><br/>
-	        	<label class="col-sm-2 control-label" >Password</label>
-	        	<input type="password" class="form-control"  ng-model="user.password" placeholder="Password"/>
-	        </div>
-	        <div class="modal-footer">
-	          <button ng-click="login()"  class="btn btn-primary">Sign in</button>
-	          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	        	<form ng-submit="login()" name="form" class="pure-form login-form">
+		        	<label class="col-sm-2 control-label" >Email</label>
+		        	<input type="email" class="form-control"  ng-model="user.email" placeholder="Email"/><br/>
+		        	<label class="col-sm-2 control-label" >Password</label>
+		        	<input type="password" class="form-control"  ng-model="user.password" placeholder="Password"/><br/>
+		        	<button type="submit"  class="btn btn-primary pull-right">Log in</button> &nbsp;&nbsp;&nbsp;&nbsp; 
+		            <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button><br/>
+		            <div class="alert alert-danger" role="alert" ng-show="errorMsg">{{errorMsg}}</div>
+		        </form>
 	        </div>
 	      </div>	     
     	</div>

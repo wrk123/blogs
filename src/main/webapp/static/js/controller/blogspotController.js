@@ -27,7 +27,7 @@ blogspot.controller('blogController',function($scope,$http){
 	 	.error(data, status);
 	};
 
-	$scope.commentOnBlog = function likeBlog() {
+	$scope.likeBlog = function likeBlog() {
 		$http.delete(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/like')
 	 	     .success(function(data) {
 	 	    	 $scope.blog = data; 
@@ -36,7 +36,7 @@ blogspot.controller('blogController',function($scope,$http){
 	};
 	
 	
-	$scope.commentOnBlog = function disLikeBlog() {
+	$scope.disLikeBlog = function disLikeBlog() {
 		$http.delete(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/dislike')
 	 	.success(function(data) {
 	 		$scope.blog = data; 
@@ -44,26 +44,11 @@ blogspot.controller('blogController',function($scope,$http){
 	 	.error(data, status);
 	};
 	
-	$scope.commentOnBlog = function isActiveBlog() {
+	$scope.isActiveBlog = function isActiveBlog() {
 		$http.delete(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/isActive')
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	});
 	};
 	
-	$scope.commentOnBlog = function login() {
-		console.log("Inside login method !!!");
-		$http.post(urlBase + '/auth/login/',$scope.user)
-	 	.success(function(data) {
-	 		$scope.user = data;
-	 		window.location="/jsp/main.jsp";
-	 	});
-	};
-	
-	$scope.commentOnBlog = function logout() {
-		$http.post(urlBase + '/auth/logout/',$scope.user)
-	 	.success(function(data) {
-	 		$scope.blog = data; 
-	 	});
-	};
 });

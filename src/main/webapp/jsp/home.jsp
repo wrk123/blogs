@@ -19,6 +19,9 @@ pageEncoding="ISO-8859-1"%>
 		<script type="text/javascript" src="../static/js/app.js"></script>
 		<script type="text/javascript" src="../static/js/controller/blogspotController.js"></script>
 		<script type="text/javascript" src="../static/js/controller/userController.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
 	</head>
 	<body ng-controller="blogController">
 		<!-- Header -->
@@ -31,7 +34,7 @@ pageEncoding="ISO-8859-1"%>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a href="index.html" class="navbar-brand">Bloggers Point</a>
+					<a href="/" class="navbar-brand">Bloggers Point</a>
 				</div>
 				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 					<form class="navbar-form navbar-right" role="search">

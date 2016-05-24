@@ -23,7 +23,6 @@
 		<div class="col-md-4"></div>
 			<div class="col-md-4">
 	  		<h3>Please enter email and password to continue </h3>		
-	  		<div class="modal-body">
               <form class="form-horizontal" role="form">
                 <div class="form-group">
                   <label  class="col-sm-2 control-label" for="inputEmail3">Email</label>
