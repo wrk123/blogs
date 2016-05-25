@@ -57,7 +57,7 @@ pageEncoding="ISO-8859-1"%>
 				<div class="col-md-8">
 					<h1>Latest Posts</h1>
 					<article ng-repeat="blogs in blog | filter:searchBlog">
-						<a href="/jsp/articleDetails.jsp?{{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
+						<a href="/jsp/articleDetails.jsp?id={{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
 				        <div class="row">
 				          	<div class="col-sm-6 col-md-6">author -
 				          	<em>	{{ blogs.user.name }} </em>

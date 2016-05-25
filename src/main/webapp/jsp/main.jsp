@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
 pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html ng-app="userApp">
 	<head>
@@ -30,42 +29,72 @@ pageEncoding="ISO-8859-1"%>
 				</div>				 
 			</div>
 		</header>
-		
 		<br/><br/>	
+		<%	String id=request.getParameter("id");		%>
+		
 		<div class="container">
 		<!-------->
 		<div id="content">			
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
-		        <li><a href="#profile" data-toggle="tab" ng-click="">Profile</a></li>
-		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="">View Blogs</a></li>
+		        <li><a href="#profile" data-toggle="tab" ng-click="getOneUser(<%=id%>)">Profile</a></li>
+		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<%=id%>)">View Blogs</a></li>
 		        <li><a href="#CreateBlogs" data-toggle="tab" ng-click="">Create Blog</a></li>
 		        <form class="navbar-form navbar-right">
 					<div class="form-group">
-						<h4> Welcome  {{ users.name }} ! &nbsp; &nbsp;<i class="fa fa-user" aria-hidden="true"></i></h4>      
+						<h4> Welcome  {{ user.name }} ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
 					</div></form>
 		    </ul>
 		    <div id="my-tab-content" class="tab-content">        
 		        <div class="tab-pane" id="profile">
-		            <h2>Profile Details</h2>
-				    <table class="table table-bordered table-striped container">
+		            <h2>Profile Details</h2><br><br>
+				    <table class="table table-bordered table-striped container" ng-include="getTemplate(user)">
+						<script type="text/ng-template" id="display">
 						<tr>
-							<td>Name: </td><td>{{ users.name }}</td>
+							<td>Name: </td><td>{{ user.name }}</td>
 						</tr>
 						<tr>
-							<td>Email:</td><td>{{ users.email }}</td>
+							<td>Email:</td><td>{{ user.email }}</td>
 						</tr>
 						<tr>
-							<td>Contact:</td><td>{{users.contact}}</td>
+							<td>Contact:</td><td>{{user.contact}}</td>
 						</tr>
 						<tr>
-							<td>Credits: </td><td>{{ users.credit }}</td>
-						</tr>						
-					</table><br/>
-					<button class="btn btn-primary"> Edit </button>
+							<td>Credits: </td><td>{{ user.credit }}</td>
+						</tr>
+						<button type="button" class="btn btn-primary" ng-click="editObj(user)" > Edit </button>						
+					 </script>
+					 
+					 <script type="text/ng-template" id="edit">
+							<tr>
+								<td>Name: </td><td><input type="text" ng-model=user.name class="form-control input-sm"/></td>
+							</tr>
+							<tr>
+								<td>Email:</td><td><input type="text" ng-model=user.email class="form-control input-sm"/></td>
+							</tr>
+							<tr>
+								<td>Contact:</td><td><input type="text" ng-model=user.contact class="form-control input-sm"/></td>
+							</tr>
+							<tr>
+								<td>Credits: </td><td>{{ user.credit }}</td>
+							</tr>
+							<button type="button" class="btn btn-info" ng-click="updateUser()"> Save </button>
+							<button type="button" class="btn btn-danger" ng-click="reset()"> Back </button> 		
+					</script>						
+					</table>
+					
+					<br/>
+					
 		        </div>
 		        <div class="tab-pane" id="ViewBlogs">
 		            <h2> You recent Blogs</h2>
-		             <table class="table table-bordered table-hover">
+		            <h3>Click on the icons for respective sort options </h3>
+		            <h4> 
+		             	Month &nbsp;&nbsp;<a ng-click="getbyMonth(user.id)"><i class="fa fa-sort" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+		            	Year  &nbsp;&nbsp;<a ng-click="getbyYear(user.id)"><i class="fa fa-sort" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+		            	Likes &nbsp;&nbsp;<a ng-click="getLike(user.id)"><i class="fa fa-sort" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+		            	Dislikes &nbsp;&nbsp;<a ng-click="getDislike(user.id)"><i class="fa fa-sort" aria-hidden="true"></i></a><br/>
+		            <br/>
+		            <table class="table table-bordered table-hover">
 					<thead>
 					  <tr>
 						<td><a href="#"> Title     </a></td>
@@ -76,11 +105,11 @@ pageEncoding="ISO-8859-1"%>
 						<td><a href="#"> Likes     </a></td>
 						<td><a href="#"> Dislikes      </a></td>
 						<td><a href="#"> Is Active  </a></td>
+						<td><a href="#"> Enable / Disable </a></td>
 					  </tr>
 					</thead>
 					<tbody>
-					  <tr ng-repeat="blog in blogs" ng-include="getTemplate(blog)">
-					   <script type="text/ng-template" id="display">
+					  <tr ng-repeat="blog in blogs" >
 					  	 <td>{{ blog.blogTitle }}</td>			  
 					     <td>{{ blog.blogContent }}</td>
 					     <td>{{ blog.creationTime | date:'medium' }}</td>
@@ -89,45 +118,35 @@ pageEncoding="ISO-8859-1"%>
 					     <td>{{ blog.blogLikes }}</td>
 					     <td>{{ blog.blogDislikes }}</td>
 					     <td>{{ blog.isActive }}</td>
-						  <td>
-				    		&nbsp;<button class="btn btn-info" ng-click="editUser(blog)"><i class="fa fa-pencil"></i></button>&nbsp;&nbsp;
-				    		<button class="btn" ng-Click='updateUser(blog.id)'><i class="fa fa-archive"></i></button> 
+						 <td>
+				    		&nbsp;&nbsp;<button class="btn" ng-Click='isActiveBlog(user.id,blog.blogId)'><i class="fa fa-archive"></i></button> 
 				    	  </td>
-					  </script>
-   					  <script type="text/ng-template" id="edit">
-						<td>{{ blog.blogTitle }}</td>
-						<td><input type="text" ng-model=blog.blogContent class="form-control input-sm"/></td>
-						<td>{{ blog.creationTime | date:'medium' }}</td>
-					    <td>{{ blog.publishTime | date:'medium' }}</td>
-						<td><input type="text" ng-model=blog.draft class="form-control input-sm"/></td>
-						<td>{{ blog.blogLikes }}</td>
-					    <td>{{ blog.blogDislikes }}</td>
-						<td>
-				   	 		<button type="button" class="btn btn-info btn-sm" ng-click="updateBlog(blog)">Save</button>
-     						<button type="button" class="btn btn-danger btn-sm" ng-click="reset()">Back</button> 
-				   		</td>						
-					  </script>
 					  </tr>
 					</tbody>
 				  </table>	            
 		        </div>
-		         <div class="tab-pane" id="CreateBlogs">
-		            <h2> Please start below </h2>
-		        	  <div class="container">
-						<input type="email" class="form-control"  ng-model="blogs.blogTitle" placeholder="Blog Title" row="2"/><br/>
-						<textarea class="form-control"  ng-model="blogs.blogContent" rows="12" cols="6"></textarea><br/><br/>
-						<button ng-click="addBlog()"  class="btn btn-primary"> Create </button>
-					 </div>
-		        </div>		       
-		    </div>
+		        <!-- Creation of blogs  -->
+		         <div class="tab-pane" id="CreateBlogs" ng-controller="usersController">
+		            <h2> Please start below </h2><br/>
+		            <form ng-submit="createBlog()" name="form" class="pure-form login-form">
+				    	<div class="form-group">
+							<input type="text" class="form-control"  ng-model="blog.blogTitle" placeholder="Blog Title" row="2"/><br/>
+							<textarea class="form-control"  ng-model="blog.blogContent" rows="6" cols="6"></textarea><br/><br/>
+						</div>
+						<div class="checkbox">
+							  <label><input type="checkbox" ng-model="blog.draft" >Draft</label>
+						</div>
+						<button type="submit"  class="btn btn-primary"> Create </button>
+					</form>
+				</div><!-- Creation of blogs  -->		       		   
+				</div> <!-- container -->
+			</div>
 		</div>
-	</div> <!-- container -->
-		
-	<!--for tab operations  -->
+	<!-- tab operations  -->
 		<script type="text/javascript">
-		    jQuery(document).ready(function ($) {
-		        $('#tabs').tab();
-		    });
-		</script>    
+			jQuery(document).ready(function ($) {
+		        $('#tabs').tab(); 
+		});
+		</script>
 	</body>
 </html>

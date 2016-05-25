@@ -7,9 +7,6 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>blogspot</name>
-  <url>http://maven.apache.org</url>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
@@ -26,11 +23,6 @@
 	      <groupId>org.springframework.boot</groupId>
 	      <artifactId>spring-boot-starter-web</artifactId>
 	    </dependency>
-	    <dependency>
-	      <groupId>org.springframework.boot</groupId>
-	      <artifactId>spring-boot-starter-actuator</artifactId>
-	    </dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -52,40 +44,25 @@
 	    	<version>2.1.5</version>
 	    </dependency>
 	    <dependency>
-	    	<groupId>org.neo4j</groupId>
-	    	<artifactId>neo4j-cypher-compiler-2.0</artifactId>
-	    	<version>2.0.3</version>
-	    </dependency>
-	    <dependency>
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
-		    <version>1.1.1</version>
 		</dependency>
-
-	    <dependency>
-	    	<groupId>org.springframework.boot</groupId>
-	    	<artifactId>spring-boot-starter-artemis</artifactId>
-	    </dependency>
-	    <dependency>
+		 <dependency>
 	    	<groupId>org.json</groupId>
 	    	<artifactId>json</artifactId>
 	    </dependency>
 	    <dependency>
-	    	<groupId>org.springframework.boot</groupId>
-	    	<artifactId>spring-boot-starter-jersey</artifactId>
-	    </dependency>
-	    <dependency>
-	    	<groupId>org.neo4j</groupId>
-	    	<artifactId>neo4j-cypher-compiler-2.2</artifactId>
-	    	<version>2.2.5</version>
-	    </dependency>
-	    <dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>jstl</artifactId>
-		    <scope>provided</scope>
 		</dependency>
 		
 		<!-- Dependency for rendering jsp pages  -->
+		<dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-jasper</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 		    <groupId>tomcat</groupId>
 		    <artifactId>jasper-compiler</artifactId>

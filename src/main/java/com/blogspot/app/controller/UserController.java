@@ -215,7 +215,6 @@ public class UserController {
 	boolean checkUserAuth(User user){
 		SessionToken userSession=null;		
 		userSession=authTokenDAO.findByUserId(user.getId());
-		System.out.println("Fetching user session value ::"+userSession);		
 				if(userSession.getAuthToken()!=null)
 					return true;
 				else 

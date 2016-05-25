@@ -1,106 +1,110 @@
-user.controller('usersController',function($scope,$http,$routeParams){
+user.controller('usersController',function($scope,$http){
 	
 	
 	var urlBase=window.location.origin;
-	
+	$scope.selected = {};
 	$scope.toggle=true;
-	
 	$http.defaults.headers.post["Content-Type"] = "application/json";
-	$scope.user=null;
-	
-	console.log($routeParams+":::"+$routeParams.value);
-	console.log(JSON.stringify($routeParams));
 	
 	
 	
 	//get one user details
-	$scope.getOneUser = function getOneUser(userId) {
-		$http.get(urlBase+'user'+userId)
+	$scope.getOneUser = function (userId) {
+		$http.get(urlBase+'/user/'+userId)
 		.success(function(data){
-			 $scope.users = data;
-		})
+			 $scope.user = data;
+		});
 	};
 	
 	
 	//user filter for likes  
-	$scope.getLike = function getLike(userId) {
+	$scope.getLike = function (userId) {
 		$http.get(urlBase+'/user/'+userId+'/blogpost/like')
 		.success(function(data){
-		 $scope.users = data;
-		})
+		 $scope.blogs = data;
+		});
 	};
 
 	//user filter for dislikes 
-	$scope.getDislike = function getDislike(userId) {
+	$scope.getDislike = function (userId) {
 		$http.get(urlBase+'/user/'+userId+'/blogpost/dislike')
 		.success(function(data){
-		 $scope.users = data;
-		})
-	};
-	
-	
-	//fetch the like from users on a userId 
-	$scope.getIsActive=function getIsActive(userId){	
-		$http.get(urlBase+'/user/'+userId+'/blogpost/isActive')
-		.success(function(data){
-			 $scope.users = data;
-		})
+		 $scope.blogs = data;
+		});
 	};
 	
 	
 	//create a new user 
-	$scope.addUser = function addUser() {
+	$scope.addUser = function () {
+		console.log($scope.user);
 		$http.post(urlBase + '/user/',$scope.user)
 			.success(function(data) {
-		 		$scope.users=user;
 		 		$scope.user={};
 		 		$scope.toggle='!toggle';	
-		    })
+		    });
 		};
 	
+	$scope.updateUser = function () {	
+		$http.post(urlBase + '/user/',$scope.user)
+			.success(function(data) {
+		 		$scope.user=data;
+		 		$scope.selected={};
+		    });
+		};	
+		
 		
 	//user filter for getting records based on month 
-	$scope.getByMonth=function getByMonth(userId){
+	$scope.getByMonth=function (userId){
 		$http.get(urlBase+'/user/'+userId+'/blogpost/month')
-		.success(function(data){
-		 $scope.users = data;
-			})
+			.success(function(data){
+				$scope.users = data;
+			});
 		};
 		
 	
 	//user filter for getting records based on year 
-	$scope.getByYear=function getByYear(userId){
+	$scope.getByYear=function (userId){
 		$http.get(urlBase+'/user/'+userId+'/blogpost/year')
 		.success(function(data){
-		 $scope.users = data;
-		})
+			$scope.users = data;
+		});
 	};
 	
-	$scope.login = function login() {
+	$scope.login = function () {
 		$http.post(urlBase + '/auth/login/',$scope.user)
 	 	.success(function(data) {
 	 		$scope.users = data;	 		
-	 		window.location="/jsp/main.jsp?"+$scope.users.id;
+	 		window.location="/jsp/main.jsp?id="+$scope.users.id;
 	 	});
 	};
 	
-	$scope.logout = function logout() {
+	$scope.logout = function () {
 		$http.post(urlBase + '/auth/logout/',$scope.user)
 	 	.success(function(data) {
 	 		$scope.blog = data; 
-	 		window.location="/jsp/index.jsp";
+	 		window.location="/";
 	 	});
 	};
 		
 	//blog related operations 
-	$http.get(urlBase+'/home')
-	.success(function(data){
-		 $scope.blog = data;
-	});
-
+	$scope.getOneUsersAllBlogs =function (userId) {
+		$http.get(urlBase + '/user/'+userId+'/blogpost')
+	 	.success(function(data) {
+	 		$scope.blogs = data; 
+	 	});
+	};	
 	
-	$scope.addBlog = function addBlog() {
-		$http.post(urlBase + '/blogpost/',$scope.blog)
+	
+	$scope.createBlog = function () {
+		
+		console.log("Intel Inside ");	
+		$scope.blog.userId=$scope.user.id;
+		$scope.blog.blogLikes=0;
+		$scope.blog.blogDislikes=0;
+		
+		console.log($scope.blogs);
+		
+		$http.post(urlBase + '/blogpost',$scope.blog)
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
@@ -108,16 +112,16 @@ user.controller('usersController',function($scope,$http,$routeParams){
 		
 	};	
 		
-	$scope.commentOnBlog = function commentOnBlog() {
-		$http.post(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/comment/'+review)
+	$scope.commentOnBlog = function(id,blogId) {
+		$http.post(urlBase + '/user/'+id+'/blogpost/'+blogId+'/comment/'+review)
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
 	 	.error(data, status);
 	};
 
-	$scope.likeBlog = function likeBlog() {
-		$http.delete(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/like')
+	$scope.likeBlog = function() {
+		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/like')
 	 	     .success(function(data) {
 	 	    	 $scope.blog = data; 
 	 	     })
@@ -125,31 +129,35 @@ user.controller('usersController',function($scope,$http,$routeParams){
 	};
 	
 	
-	$scope.disLikeBlog = function disLikeBlog() {
-		$http.delete(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/dislike')
+	$scope.disLikeBlog = function(id,blogId) {
+		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/dislike')
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
 	 	.error(data, status);
 	};
 	
-	$scope.isActiveBlog = function isActiveBlog() {
-		$http.delete(urlBase + '/user/'+$scope.user.id+'/blogpost/'+$scope.blog.blogId+'/isActive')
+	$scope.isActiveBlog = function(id,blogId) {
+		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/isActive')
 	 	.success(function(data) {
-	 		$scope.blog = data; 
+	 		console.log(data);
+	 		$scope.blog = data;
+	 		
 	 	});
 	};
 	
 	
 	//code for inline editing using angular js 
 	//editing inline
-	$scope.getTemplate = function (obj) {
-	 if (obj.id === $scope.selected.id){
-		 	return 'edit';
+	$scope.getTemplate = function (user) {
+	 if (user.id === $scope.selected.id){		  
+		   return 'edit';
 		 }
-		  else return 'display';	};
-		
-	$scope.editUser = function (obj) {
+	   else  
+		   return 'display';  	
+	 };
+	
+	$scope.editObj = function (obj) {
 			 $scope.selected = angular.copy(obj);
 	 };
 	 

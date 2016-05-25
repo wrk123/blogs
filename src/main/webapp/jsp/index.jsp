@@ -2,7 +2,6 @@
 pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html ng-app="userApp">
 	<head >
 		<title>Blogs </title>
@@ -64,7 +63,7 @@ pageEncoding="ISO-8859-1"%>
 		</div>
 	</div> 
 	
-	<!-- For authneticating user -->
+	
 	 <div class="modal fade" id="myModal" role="dialog">
      	<div class="modal-dialog">
 	      <div class="modal-content">
@@ -79,8 +78,7 @@ pageEncoding="ISO-8859-1"%>
 		        	<label class="col-sm-2 control-label" >Password</label>
 		        	<input type="password" class="form-control"  ng-model="user.password" placeholder="Password"/><br/>
 		        	<button type="submit"  class="btn btn-primary pull-right">Log in</button> &nbsp;&nbsp;&nbsp;&nbsp; 
-		            <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button><br/>
-		            <div class="alert alert-danger" role="alert" ng-show="errorMsg">{{errorMsg}}</div>
+		            <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button><br/>		            
 		        </form>
 	        </div>
 	      </div>	     

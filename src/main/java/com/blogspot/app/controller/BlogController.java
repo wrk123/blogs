@@ -3,8 +3,10 @@ package com.blogspot.app.controller;
 
 import java.util.Date;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.blogspot.app.model.User;
 import com.blogspot.app.model.Blog;
 import com.blogspot.app.model.Review;
@@ -128,7 +130,7 @@ public class BlogController {
 		return new ResponseEntity<Blog>(blogs,HttpStatus.OK);
 	}
 	
-	//for like a blog
+	//to like a blog
 	@RequestMapping(value="/user/{userId}/blogpost/{blogId}/like",method=RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Blog> likeBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId)	throws Exception{
 		Blog blogs=null;
@@ -158,7 +160,7 @@ public class BlogController {
 		return new ResponseEntity<Blog>(blogs,HttpStatus.OK);
 	}
 	
-	//for dislike a blog
+	//to dislike a blog
 	@RequestMapping(value="/user/{userId}/blogpost/{blogId}/dislike",method=RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Blog> dislikeBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId){
 		Blog blogs=null;
@@ -199,7 +201,7 @@ public class BlogController {
 	}
 	
 	//for making post inActive by the user
-	@RequestMapping(value="/user/{userId}/blogpost/{userBlogId}/isActive/",method=RequestMethod.DELETE)
+	@RequestMapping(value="/user/{userId}/blogpost/{userBlogId}/isActive",method=RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Blog> markBlogInactive(@PathVariable Long userId, @PathVariable Long userBlogId){
 		User user=null;
 		Blog blogs = null;
@@ -227,4 +229,20 @@ public class BlogController {
 		return new  ResponseEntity<Blog>(blogs,HttpStatus.OK); 
 	}
 	
+	//fetch all the blogs of a specific user
+	@RequestMapping(value="/user/{userId}/blogpost",method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<List<Blog>> getOneUsersAllBlogs(@PathVariable Long userId){
+		User user=null;
+		List<Blog> blogs=null;
+		user=userDAO.findById(userId);
+		
+		if(!checkUserAuth(user))
+			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
+		
+		blogs=blogRepo.findAllByUserIdOrderByCreationTimeDesc(user.getId());
+		if(blogs == null)
+			return new ResponseEntity<List<Blog>>(HttpStatus.NO_CONTENT);
+		
+		return new  ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
+	}
 }
