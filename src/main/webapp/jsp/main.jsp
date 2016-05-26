@@ -37,11 +37,11 @@ pageEncoding="ISO-8859-1"%>
 		
 		<div class="container">
 		<!-------->
-		<div id="content">			
+		<div id="content" ng-init="init(<c:out value="${id}"/>)">			
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
 		        <li><a href="#profile" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Profile</a></li>
 		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<c:out value="${id}"/>)">View Blogs</a></li>
-		        <li><a href="#CreateBlogs" data-toggle="tab" ng-click="">Create Blog</a></li>
+		        <li><a href="#CreateBlogs" data-toggle="tab" >Create Blog</a></li>
 		        <form class="navbar-form navbar-right">
 					<div class="form-group">
 						<h4> Welcome  {{ user.name }} ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      

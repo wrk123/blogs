@@ -9,7 +9,7 @@ blogspot.controller('blogController',function($scope,$http){
 		 $scope.blog = data;
 	})
 	.error(function(data, status) {
-		console.error('Repos error', status, data);
+		console.error('line 12 b :', status, data);
 	});
 	
 	
@@ -19,7 +19,7 @@ blogspot.controller('blogController',function($scope,$http){
 			$scope.blogs = data;
 		})
 		.error(function(data, status) {
-			console.error('Repos error', status, data);
+			console.error('line 21 b :', status, data);
 		});
 	};
 	

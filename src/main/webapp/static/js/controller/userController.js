@@ -52,7 +52,7 @@ user.controller('usersController',function($scope,$http){
 		 		$scope.toggle='!toggle';	
 		    })
 		    .error(function(data, status) {
-		    	console.error(' userController line 55 error', status, data);
+		    	console.error(' line 55 error', status, data);
 		    });
 		};
 	
@@ -76,7 +76,7 @@ user.controller('usersController',function($scope,$http){
 				$scope.users = data;
 			})
 			.error(function(data, status) {
-				console.error(' userController line 79 error', status, data);
+				console.error(' line 79 error', status, data);
 			});
 		};
 		
@@ -100,7 +100,7 @@ user.controller('usersController',function($scope,$http){
 	 		window.location="/profile/"+$scope.user.id;
 	 	})
 	 	.error(function(data, status) {
-			console.error(' userController line 103 error', status,'data is ', data);
+			console.error(' line 103 error', status,'data is ', data);
 		});
 	};
 	
@@ -125,7 +125,7 @@ user.controller('usersController',function($scope,$http){
 	 		$scope.blogs = data; 
 	 	})
 	 	.error(function(data, status) {
-			console.error('  line 128 error', status, data);
+			console.error(' line 128 error', status, data);
 		});
 	};	
 	
@@ -139,50 +139,54 @@ user.controller('usersController',function($scope,$http){
 		$http.post(urlBase + '/blogpost',$scope.blog)
 	 	.success(function(data) {
 	 		$scope.blog = {}; 
-	 		alert("Check the View blogs section for updation of the blog. ");
+	 		alert("Goto View blogs section for viewing the latest  blog. ");
 	 	})
 	 	.error(function(data, status) {
 			console.error('line 145 error', status, data);
 		});;	 			
 	};	
-		
+	
+	//click to comment on a blog 
 	$scope.commentOnBlog = function(id,blogId) {
 		$http.post(urlBase + '/user/'+id+'/blogpost/'+blogId+'/comment/'+review)
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
 	 	.error(function(data, status) {
-			console.error(' userController line 155 error', status, data);
+			console.error(' line 155 error', status, data);
 		});
 	};
 
+	//click to like a blog
 	$scope.likeBlog = function() {
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/like')
 	 	     .success(function(data) {
 	 	    	 $scope.blog = data; 
 	 	     })
 	 	    .error(function(data, status) {
-				console.error(' userController line 165 error', status, data);
+				console.error(' line 165 error', status, data);
 			});
 	};
 	
-	
+	//click to  dislike a blog
 	$scope.disLikeBlog = function(id,blogId) {
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/dislike')
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
 	 	.error(function(data, status) {
-			console.error(' userController line 176 error', status, data);
+			console.error(' line 176 error', status, data);
 		});
 	};
 	
+	//click to enable or disable a blog
 	$scope.isActiveBlog = function(id,blogId) {
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/isActive')
 	 	.success(function(data) {
 	 		for (var i=0; i < $scope.blogs.length; i++) {
 	 	        if ($scope.blogs[i].blogId === data.blogId) {
 	 	        	$scope.blogs[i].publishTime=data.publishTime;
+	 	        	$scope.blogs[i].draft=data.draft;
 	 	        	$scope.blogs[i].isActive=data.isActive;
 	 	        }
 	 	    } 	 		
@@ -209,4 +213,11 @@ user.controller('usersController',function($scope,$http){
 	 $scope.reset = function () {
 		 $scope.selected = {};
 	 };
+	 
+	 
+	 
+	 $scope.init = function(id){
+			$scope.getOneUser(id);
+			$scope.getOneUsersAllBlogs(id);
+		}
 });

@@ -222,6 +222,7 @@ public class BlogController {
 			else
 				{	if(blogs.getPublishTime()==null)
 					{	blogs.setPublishTime(new Date());		// in case of making a blog active, one need to publish it 
+						blogs.setDraft(false);
 						blogs.setIsActive(true); }
 					else
 						blogs.setIsActive(true); 

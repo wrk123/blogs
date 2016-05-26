@@ -37,7 +37,7 @@ pageEncoding="ISO-8859-1"%>
 				</div>
 				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">								    
 					<ul class="nav navbar-nav">
-						<li><a href="/">Home</a></li>
+						<li><a href="/blogHome">Home</a></li>
 						<li><a href="#">Profile</a></li>
 						<li><a href="#">View blogs</a></li>
 					</ul>
@@ -52,7 +52,7 @@ pageEncoding="ISO-8859-1"%>
 			<div class="row">
 				<div class="col-md-8">
 					<article>
-						<h3>{{ blogs.blogTitle}}</h3></a>
+						<h2>{{ blogs.blogTitle}}</h2></a>
 				        <div class="row">
 				          	<div class="col-sm-6 col-md-6">author -
 				          	<em>	{{ blogs.user.name }} </em>
@@ -67,11 +67,16 @@ pageEncoding="ISO-8859-1"%>
 	                      <br />		        
 						  	 <p>{{ blogs.blogContent}}</p> 
 				          <hr>
+				          <div>
+				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogDislikes }}</i>
+				          </div>
 					</article>	
 					<ul class="pager">
 						<li class="previous"><a href="/blogHome">&larr; Back to posts</a></li>
 					</ul>	
 				<!-- Comment form -->
+					
 					<div class="well">
 						<h4>Leave a comment</h4>
 						<form role="form" class="clearfix">
@@ -95,11 +100,11 @@ pageEncoding="ISO-8859-1"%>
 
 					<hr />
 				<!-- Displays the latest comments on the blog  -->
-					<h3><em>Comments -</em></h3>
+					<h3><em> Recent Comments -</em></h3>
 					<ul id="comments" class="comments">
 						<li class="comment" ng-repeat="review in blogs.review">
 							<div class="clearfix">
-								<h5 class="pull-left"> ID: {{ review.reviewId }}</h5>
+								<h5 class="pull-left"> ID: {{ review.userId }} </h5>
 								<p class="pull-right">{{ review.creationTime | date:'medium' }}</p>
 							</div>
 							<p>
@@ -114,10 +119,10 @@ pageEncoding="ISO-8859-1"%>
 					<!-- Latest Posts -->
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4>Latest Posts</h4>
+							<h3>Latest Posts</h4>
 						</div>
-						<ul class="list-group" ng-repeat="blogs in blog | limitTo:5 ">
-							<li class="list-group-item"><a href="#">{{blogs.blogTitle}}</li>
+						<ul class="list-group" ng-repeat="blogs in blog | limitTo:7 ">
+							<li class="list-group-item"><a href="/article/{{ blogs.blogId }}">{{blogs.blogTitle}}</li>
 						</ul>
 					</div>			
 				</div>

@@ -81,7 +81,7 @@ pageEncoding="ISO-8859-1"%>
 							<h4>Latest Posts</h4>
 						</div>
 						<ul class="list-group" ng-repeat="blogs in blog | limitTo:5 ">
-							<li class="list-group-item"><a href="#">{{blogs.blogTitle}}</li>
+							<li class="list-group-item"><a href="/article/{{ blogs.blogId }}">{{blogs.blogTitle}}</li>
 						</ul>
 					</div>			
 				</div>				
