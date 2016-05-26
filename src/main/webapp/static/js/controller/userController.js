@@ -44,6 +44,7 @@ user.controller('usersController',function($scope,$http){
 		    });
 		};
 	
+	//edit a user and update it
 	$scope.updateUser = function () {	
 		$http.post(urlBase + '/user/',$scope.user)
 			.success(function(data) {
@@ -70,23 +71,27 @@ user.controller('usersController',function($scope,$http){
 		});
 	};
 	
+	//user login function
 	$scope.login = function () {
 		$http.post(urlBase + '/auth/login/',$scope.user)
 	 	.success(function(data) {
-	 		$scope.users = data;	 		
-	 		window.location="/jsp/main.jsp?id="+$scope.users.id;
+	 		$scope.user = data;	 		
+	 		window.location="/profile/"+$scope.user.id;
 	 	});
 	};
 	
+	//user logout function
 	$scope.logout = function () {
 		$http.post(urlBase + '/auth/logout/',$scope.user)
 	 	.success(function(data) {
-	 		$scope.blog = data; 
+	 		$scope.blog = {}; 
 	 		window.location="/";
 	 	});
 	};
 		
 	//blog related operations 
+	
+	//fetch a single users alll blogs 
 	$scope.getOneUsersAllBlogs =function (userId) {
 		$http.get(urlBase + '/user/'+userId+'/blogpost')
 	 	.success(function(data) {
@@ -94,22 +99,20 @@ user.controller('usersController',function($scope,$http){
 	 	});
 	};	
 	
-	
+	//create a blog and switch to view all logs of the user 
 	$scope.createBlog = function () {
 		
-		console.log("Intel Inside ");	
 		$scope.blog.userId=$scope.user.id;
 		$scope.blog.blogLikes=0;
 		$scope.blog.blogDislikes=0;
 		
-		console.log($scope.blogs);
-		
 		$http.post(urlBase + '/blogpost',$scope.blog)
 	 	.success(function(data) {
-	 		$scope.blog = data; 
-	 	})
-	 	.error(data, status);
-		
+	 		$scope.blog = {}; 
+	 		
+	 		//set the blog scope to empty and switch to view blogs page  
+	 		window.location=urlBase+window.location.pathname+"#/ViewBlogs";
+	 	});	 			
 	};	
 		
 	$scope.commentOnBlog = function(id,blogId) {
@@ -140,15 +143,16 @@ user.controller('usersController',function($scope,$http){
 	$scope.isActiveBlog = function(id,blogId) {
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/isActive')
 	 	.success(function(data) {
-	 		console.log(data);
-	 		$scope.blog = data;
-	 		
+	 		for (var i=0; i < $scope.blogs.length; i++) {
+	 	        if ($scope.blogs[i].blogId === data.blogId) {
+	 	        	$scope.blogs[i].isActive=data.isActive;
+	 	        }
+	 	    } 	 		
 	 	});
 	};
 	
 	
 	//code for inline editing using angular js 
-	//editing inline
 	$scope.getTemplate = function (user) {
 	 if (user.id === $scope.selected.id){		  
 		   return 'edit';

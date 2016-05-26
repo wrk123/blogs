@@ -30,14 +30,17 @@ pageEncoding="ISO-8859-1"%>
 			</div>
 		</header>
 		<br/><br/>	
-		<%	String id=request.getParameter("id");		%>
+		
+		<c:if test="${not empty user}">
+			<c:set var="id" scope="session" value="${user.id}"/>
+		</c:if>
 		
 		<div class="container">
 		<!-------->
 		<div id="content">			
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
-		        <li><a href="#profile" data-toggle="tab" ng-click="getOneUser(<%=id%>)">Profile</a></li>
-		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<%=id%>)">View Blogs</a></li>
+		        <li><a href="#profile" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Profile</a></li>
+		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<c:out value="${id}"/>)">View Blogs</a></li>
 		        <li><a href="#CreateBlogs" data-toggle="tab" ng-click="">Create Blog</a></li>
 		        <form class="navbar-form navbar-right">
 					<div class="form-group">
