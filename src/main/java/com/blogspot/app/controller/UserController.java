@@ -15,17 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.blogspot.app.model.Blog;
-import com.blogspot.app.model.Review;
-import com.blogspot.app.model.SessionToken;
 import com.blogspot.app.model.User;
+import com.blogspot.app.model.SessionToken;
 import com.blogspot.app.repository.BlogRepository;
 import com.blogspot.app.repository.ReviewRepository;
 import com.blogspot.app.repository.SessionTokenRepository;
 import com.blogspot.app.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 
 
@@ -56,8 +53,8 @@ public class UserController {
 		SessionToken userSession=null;		
 		
 		//checking for same email present in the database
-		//users=userDAO.findByEmail(userDetails.getEmail());
-		if(user!=null){
+		users=userDAO.findByEmail(userDetails.getEmail());
+		if(users!=null){
 			return new ResponseEntity<User>(HttpStatus.CONFLICT);
 		}
 		

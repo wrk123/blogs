@@ -4,6 +4,7 @@ package com.blogspot.app.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.neo4j.cypher.internal.compiler.v2_2.planner.logical.greedy.findShortestPaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -219,7 +220,12 @@ public class BlogController {
 		{	if(blogs.getIsActive())
 				blogs.setIsActive(false);
 			else
-				blogs.setIsActive(true);
+				{	if(blogs.getPublishTime()==null)
+					{	blogs.setPublishTime(new Date());		// in case of making a blog active, one need to publish it 
+						blogs.setIsActive(true); }
+					else
+						blogs.setIsActive(true); 
+				}
 		}
 		else 
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
@@ -244,5 +250,14 @@ public class BlogController {
 			return new ResponseEntity<List<Blog>>(HttpStatus.NO_CONTENT);
 		
 		return new  ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value="/blog/{id}",method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Blog> fetchOneBlog(@PathVariable Long id){
+		Blog blog=null;
+		blog=blogRepo.findOne(id);
+		
+		return new  ResponseEntity<Blog>(blog,HttpStatus.OK);
 	}
 }

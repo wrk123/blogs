@@ -13,6 +13,9 @@ user.controller('usersController',function($scope,$http){
 		$http.get(urlBase+'/user/'+userId)
 		.success(function(data){
 			 $scope.user = data;
+		})
+		.error(function(data, status) {
+			console.error(' line 18 error', status, data);
 		});
 	};
 	
@@ -21,8 +24,11 @@ user.controller('usersController',function($scope,$http){
 	$scope.getLike = function (userId) {
 		$http.get(urlBase+'/user/'+userId+'/blogpost/like')
 		.success(function(data){
-		 $scope.blogs = data;
-		});
+			$scope.blogs = data;
+		})
+		.error(function(data, status) {
+			console.error(' line 30 error', status, data);
+		});;
 	};
 
 	//user filter for dislikes 
@@ -30,7 +36,10 @@ user.controller('usersController',function($scope,$http){
 		$http.get(urlBase+'/user/'+userId+'/blogpost/dislike')
 		.success(function(data){
 		 $scope.blogs = data;
-		});
+		})
+		.error(function(data, status) {
+			console.error(' line 41 error', status, data);
+		});;
 	};
 	
 	
@@ -41,6 +50,9 @@ user.controller('usersController',function($scope,$http){
 			.success(function(data) {
 		 		$scope.user={};
 		 		$scope.toggle='!toggle';	
+		    })
+		    .error(function(data, status) {
+		    	console.error(' userController line 55 error', status, data);
 		    });
 		};
 	
@@ -50,7 +62,10 @@ user.controller('usersController',function($scope,$http){
 			.success(function(data) {
 		 		$scope.user=data;
 		 		$scope.selected={};
-		    });
+		    })
+		    .error(function(data, status) {
+				console.error(' line 67 error', status, data);
+			});
 		};	
 		
 		
@@ -59,6 +74,9 @@ user.controller('usersController',function($scope,$http){
 		$http.get(urlBase+'/user/'+userId+'/blogpost/month')
 			.success(function(data){
 				$scope.users = data;
+			})
+			.error(function(data, status) {
+				console.error(' userController line 79 error', status, data);
 			});
 		};
 		
@@ -68,6 +86,9 @@ user.controller('usersController',function($scope,$http){
 		$http.get(urlBase+'/user/'+userId+'/blogpost/year')
 		.success(function(data){
 			$scope.users = data;
+		})
+		.error(function(data, status) {
+			console.error(' line 91 error', status, data);
 		});
 	};
 	
@@ -77,7 +98,10 @@ user.controller('usersController',function($scope,$http){
 	 	.success(function(data) {
 	 		$scope.user = data;	 		
 	 		window.location="/profile/"+$scope.user.id;
-	 	});
+	 	})
+	 	.error(function(data, status) {
+			console.error(' userController line 103 error', status,'data is ', data);
+		});
 	};
 	
 	//user logout function
@@ -86,7 +110,10 @@ user.controller('usersController',function($scope,$http){
 	 	.success(function(data) {
 	 		$scope.blog = {}; 
 	 		window.location="/";
-	 	});
+	 	})
+	 	.error(function(data, status) {
+			console.error(' line 115 error', status, data);
+		});
 	};
 		
 	//blog related operations 
@@ -96,7 +123,10 @@ user.controller('usersController',function($scope,$http){
 		$http.get(urlBase + '/user/'+userId+'/blogpost')
 	 	.success(function(data) {
 	 		$scope.blogs = data; 
-	 	});
+	 	})
+	 	.error(function(data, status) {
+			console.error('  line 128 error', status, data);
+		});
 	};	
 	
 	//create a blog and switch to view all logs of the user 
@@ -109,10 +139,11 @@ user.controller('usersController',function($scope,$http){
 		$http.post(urlBase + '/blogpost',$scope.blog)
 	 	.success(function(data) {
 	 		$scope.blog = {}; 
-	 		
-	 		//set the blog scope to empty and switch to view blogs page  
-	 		window.location=urlBase+window.location.pathname+"#/ViewBlogs";
-	 	});	 			
+	 		alert("Check the View blogs section for updation of the blog. ");
+	 	})
+	 	.error(function(data, status) {
+			console.error('line 145 error', status, data);
+		});;	 			
 	};	
 		
 	$scope.commentOnBlog = function(id,blogId) {
@@ -120,7 +151,9 @@ user.controller('usersController',function($scope,$http){
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
-	 	.error(data, status);
+	 	.error(function(data, status) {
+			console.error(' userController line 155 error', status, data);
+		});
 	};
 
 	$scope.likeBlog = function() {
@@ -128,7 +161,9 @@ user.controller('usersController',function($scope,$http){
 	 	     .success(function(data) {
 	 	    	 $scope.blog = data; 
 	 	     })
-	 	     .error(data, status);
+	 	    .error(function(data, status) {
+				console.error(' userController line 165 error', status, data);
+			});
 	};
 	
 	
@@ -137,7 +172,9 @@ user.controller('usersController',function($scope,$http){
 	 	.success(function(data) {
 	 		$scope.blog = data; 
 	 	})
-	 	.error(data, status);
+	 	.error(function(data, status) {
+			console.error(' userController line 176 error', status, data);
+		});
 	};
 	
 	$scope.isActiveBlog = function(id,blogId) {
@@ -145,10 +182,14 @@ user.controller('usersController',function($scope,$http){
 	 	.success(function(data) {
 	 		for (var i=0; i < $scope.blogs.length; i++) {
 	 	        if ($scope.blogs[i].blogId === data.blogId) {
+	 	        	$scope.blogs[i].publishTime=data.publishTime;
 	 	        	$scope.blogs[i].isActive=data.isActive;
 	 	        }
 	 	    } 	 		
-	 	});
+	 	})
+	 	.error(function(data, status) {
+			console.error(' line 191 error', status, data);
+		});
 	};
 	
 	

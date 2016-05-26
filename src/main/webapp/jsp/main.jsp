@@ -89,7 +89,9 @@ pageEncoding="ISO-8859-1"%>
 					
 		        </div>
 		        <div class="tab-pane" id="ViewBlogs">
+		        	
 		            <h2> You recent Blogs</h2>
+		            <p style=" text-align: center; color: red;"> Please note blog saved as draft will be automatically published when made <b>Active.</b></p>
 		            <h3>Click on the icons for respective sort options </h3>
 		            <h4> 
 		             	Month &nbsp;&nbsp;<a ng-click="getbyMonth(user.id)"><i class="fa fa-sort" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;

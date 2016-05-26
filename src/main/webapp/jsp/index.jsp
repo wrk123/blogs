@@ -29,7 +29,7 @@ pageEncoding="ISO-8859-1"%>
 		  	<div class="col">
 		  		<!-- <a href="/jsp/login.jsp"><button class="btn btn-primary">Login</button>&</a>nbsp;&nbsp;&nbsp;&nbsp; -->
 		  		<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Login</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	 	  		<a href="/jsp/home.jsp"><button type="button" class="btn btn-info">View all blogs</button></a>&nbsp;&nbsp;&nbsp;&nbsp;
+	 	  		<a href="/blogHome"><button type="button" class="btn btn-info">View all blogs</button></a>&nbsp;&nbsp;&nbsp;&nbsp;
 		  		<button ng-click='toggle=!toggle' class="btn btn-panel"><i class="panel-title-icon fa fa-plus"></i> Add New User </button>
 		  	</div>
 		  </div>

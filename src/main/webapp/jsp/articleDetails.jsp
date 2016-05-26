@@ -3,7 +3,7 @@ pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html ng-app="blogspotApp">
 	<head>
 		<title>Blog articles </title>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -18,8 +18,11 @@ pageEncoding="ISO-8859-1"%>
 		<script type="text/javascript" src="../static/js/app.js"></script>
 		<script type="text/javascript" src="../static/js/controller/blogspotController.js"></script>
 		<script type="text/javascript" src="../static/js/controller/userController.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
 	</head>
-	<body>
+	<body ng-controller="blogController">
 		<!-- Header -->
 		<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">			
 			<div class="container">
@@ -32,25 +35,24 @@ pageEncoding="ISO-8859-1"%>
 					</button>
 					<a href="/" class="navbar-brand">Bloggers Point</a>
 				</div>
-				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-					<form class="navbar-form navbar-right" role="search">
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Search blog by name" ng-model="searchBlog" />     
-						</div>
-					</form>				    
+				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">								    
 					<ul class="nav navbar-nav">
-						<li><a href="/jsp/index.jsp">Home</a></li>
+						<li><a href="/">Home</a></li>
 						<li><a href="#">Profile</a></li>
 						<li><a href="#">View blogs</a></li>
 					</ul>
 				</nav>
 			</div>
 		</header>
-		<div class="container">
+		<c:if test="${not empty blogs}">
+			<c:set var="id" scope="session" value="${blogs.blogId}"/>
+		</c:if>
+		
+		<div class="container"  ng-init="init(<c:out value="${id}"/>)">
 			<div class="row">
 				<div class="col-md-8">
 					<article>
-						<a href="/jsp/articleDetails.jsp?{{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
+						<h3>{{ blogs.blogTitle}}</h3></a>
 				        <div class="row">
 				          	<div class="col-sm-6 col-md-6">author -
 				          	<em>	{{ blogs.user.name }} </em>
@@ -67,7 +69,7 @@ pageEncoding="ISO-8859-1"%>
 				          <hr>
 					</article>	
 					<ul class="pager">
-						<li class="previous"><a href="/jsp/home.jsp">&larr; Back to posts</a></li>
+						<li class="previous"><a href="/blogHome">&larr; Back to posts</a></li>
 					</ul>	
 				<!-- Comment form -->
 					<div class="well">
@@ -93,28 +95,21 @@ pageEncoding="ISO-8859-1"%>
 
 					<hr />
 				<!-- Displays the latest comments on the blog  -->
+					<h3><em>Comments -</em></h3>
 					<ul id="comments" class="comments">
-						<li class="comment">
+						<li class="comment" ng-repeat="review in blogs.review">
 							<div class="clearfix">
-								<h4 class="pull-left">John</h4>
-								<p class="pull-right">9:41 PM on August 24, 2013</p>
+								<h5 class="pull-left"> ID: {{ review.reviewId }}</h5>
+								<p class="pull-right">{{ review.creationTime | date:'medium' }}</p>
 							</div>
 							<p>
-								<em>I don't believe in astrology but still your writing style is really great!</em>
-							</p>
-						</li>
-
-						<li class="comment clearfix">
-							<div class="clearfix">
-								<h4 class="pull-left">John</h4>
-								<p class="pull-right">9:41 PM on August 24, 2013</p>
-							</div>
-							<p>
-								<em>I don't believe in astrology but still your writing style is really great!</em>
+								<em>{{ review.comments }}</em>
 							</p>
 						</li>
 					</ul>
 				</div>
+				
+				<!-- Right  Side panel -->
 				<div class="col-md-4">
 					<!-- Latest Posts -->
 					<div class="panel panel-default">
@@ -126,7 +121,8 @@ pageEncoding="ISO-8859-1"%>
 						</ul>
 					</div>			
 				</div>
+			 <!-- Right Side panel -->
 			</div>
-		</div>	
+		</div>
 	</body>
 </html>

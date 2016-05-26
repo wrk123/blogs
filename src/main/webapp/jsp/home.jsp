@@ -43,7 +43,7 @@ pageEncoding="ISO-8859-1"%>
 						</div>
 					</form>				    
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="/jsp/index.jsp">Home</a></li>
+						<li class="active"><a href="/">Home</a></li>
 						<li><a href="#">Profile</a></li>
 						<li><a href="#">View blogs</a></li>
 					</ul>
@@ -63,7 +63,7 @@ pageEncoding="ISO-8859-1"%>
 				          	<em>	{{ blogs.user.name }} </em>
 				          	</div>
 				          	<div class="col-sm-6 col-md-6">
-				          		<a href="/jsp/articleDetails.jsp?{{ blogs.blogId }}"><span class="glyphicon glyphicon-pencil"></span></a>
+				          		<a href="/article/{{ blogs.blogId }}"><span class="glyphicon glyphicon-pencil"></span></a>
 				          		&nbsp;&nbsp;  	{{ blogs.review.length }} Comments	          		
 				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blogs.creationTime | date:'medium'}}			          		
 				          	</div>

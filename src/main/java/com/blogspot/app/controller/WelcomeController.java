@@ -6,14 +6,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.blogspot.app.model.Blog;
 import com.blogspot.app.model.SessionToken;
 import com.blogspot.app.model.User;
+import com.blogspot.app.repository.BlogRepository;
 import com.blogspot.app.repository.SessionTokenRepository;
 import com.blogspot.app.repository.UserRepository;
 
 @Controller
 public class WelcomeController {
 
+	@Autowired
+	BlogRepository blogRepo;
 	
 	@Autowired
 	SessionTokenRepository authTokenDAO;
@@ -46,8 +50,27 @@ public class WelcomeController {
 			}
 			else 
 				model = new ModelAndView("/jsp/error.jsp");
+		}else{
+				model = new ModelAndView("/jsp/error.jsp");
 		}
-		
 		return model;
 	}
+	
+	@RequestMapping(value="/blogHome")
+	public ModelAndView blogHome(){
+		ModelAndView model = new ModelAndView("/jsp/home.jsp");		
+		return model;
+	}
+	
+	//fetch the details of a single blog
+	@RequestMapping(value="/article/{id}")
+	public ModelAndView blogArticle(@PathVariable Long id ){
+		Blog blogs=blogRepo.findOne(id);
+		
+		ModelAndView model = new ModelAndView("/jsp/articleDetails.jsp");		
+		model.addObject("blogs",blogs);
+		
+		return model;
+	} 
+	
 }
