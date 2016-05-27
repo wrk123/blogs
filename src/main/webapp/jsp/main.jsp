@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
 pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -22,7 +23,7 @@ pageEncoding="ISO-8859-1"%>
 	</head>
 	<body ng-controller="usersController">
 	<!-- Header -->
-		 <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">			
+		<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">			
 			<div class="container">
 				<div class="navbar-header">		
 					<a href="/" class="navbar-brand">Bloggers Point</a>
@@ -30,25 +31,27 @@ pageEncoding="ISO-8859-1"%>
 			</div>
 		</header>
 		<br/><br/>	
-		
+	<!-- Header -->	
 		<c:if test="${not empty user}">
-			<c:set var="id" scope="session" value="${user.id}"/>
+			<c:set var="id" scope="session" value="${user.id}"/>			
+			<c:set var="name" scope="session" value="${user.name}"/>			
 		</c:if>
 		
 		<div class="container">
-		<!-------->
-		<div id="content" ng-init="init(<c:out value="${id}"/>)">			
+			<div id="content" ng-init="init(<c:out value="${id}"/>)">			
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
-		        <li><a href="#profile" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Profile</a></li>
+		        <li><a href="#details" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Details</a></li>
 		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<c:out value="${id}"/>)">View Blogs</a></li>
 		        <li><a href="#CreateBlogs" data-toggle="tab" >Create Blog</a></li>
+		        <li><a href="#ReviewBlogs" data-toggle="tab" >Review Blogs</a></li>
 		        <form class="navbar-form navbar-right">
 					<div class="form-group">
 						<h4> Welcome  {{ user.name }} ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
-					</div></form>
+					</div>
+				</form>
 		    </ul>
 		    <div id="my-tab-content" class="tab-content">        
-		        <div class="tab-pane" id="profile">
+		        <div class="tab-pane" id="details">
 		            <h2>Profile Details</h2><br><br>
 				    <table class="table table-bordered table-striped container" ng-include="getTemplate(user)">
 						<script type="text/ng-template" id="display">
@@ -72,7 +75,7 @@ pageEncoding="ISO-8859-1"%>
 								<td>Name: </td><td><input type="text" ng-model=user.name class="form-control input-sm"/></td>
 							</tr>
 							<tr>
-								<td>Email:</td><td><input type="text" ng-model=user.email class="form-control input-sm"/></td>
+								<td>Email:</td><td>{{ user.email }}</td>
 							</tr>
 							<tr>
 								<td>Contact:</td><td><input type="text" ng-model=user.contact class="form-control input-sm"/></td>
@@ -89,8 +92,7 @@ pageEncoding="ISO-8859-1"%>
 					
 		        </div>
 		        <div class="tab-pane" id="ViewBlogs">
-		        	
-		            <h2> You recent Blogs</h2>
+		        	<h2>You recent Blogs</h2>
 		            <p style=" text-align: center; color: red;"> Please note blog saved as draft will be automatically published when made <b>Active.</b></p>
 		            <h3>Click on the icons for respective sort options </h3>
 		            <h4> 
@@ -143,7 +145,29 @@ pageEncoding="ISO-8859-1"%>
 						</div>
 						<button type="submit"  class="btn btn-primary"> Create </button>
 					</form>
-				</div><!-- Creation of blogs  -->		       		   
+				</div>
+				
+				<!-- Review others blogs  -->
+				<div class="tab-pane" id="ReviewBlogs">
+					<h1>Latest Posts</h1>
+					<article ng-repeat="blogs in blog | filter:searchBlog">
+						<a href="/jsp/articleDetails.jsp?id={{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
+				        <div class="row">
+				          	<div class="col-sm-6 col-md-6">author -
+				          	<em>	{{ blogs.user.name }} </em>
+				          	</div>
+				          	<div class="col-sm-6 col-md-6">
+				          		<a href="/article/{{ blogs.blogId }}"><span class="glyphicon glyphicon-pencil"></span></a>
+				          		&nbsp;&nbsp;  	{{ blogs.review.length }} Comments	          		
+				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blogs.creationTime | date:'medium'}}			          		
+				          	</div>
+				          </div>
+				          <hr>
+				          <br/>
+				          <p>{{ blogs.blogContent}}</p>
+				          <hr>
+					</article>
+				</div>
 				</div> <!-- container -->
 			</div>
 		</div>

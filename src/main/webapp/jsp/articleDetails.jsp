@@ -49,6 +49,20 @@ pageEncoding="ISO-8859-1"%>
 		</c:if>
 		
 		<div class="container"  ng-init="init(<c:out value="${id}"/>)">
+			<%	
+			  Cookie[] cookies = request.getCookies();
+				String name="";
+			if(cookies.length>1)
+			 { name=cookies[1].getValue();
+				if(!name.isEmpty())
+				{%>
+			<!-- add Logout -->
+			<form class="navbar-form navbar-right">
+				<div class="form-group">
+					<h4> Welcome <%=cookies[1].getValue()%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
+				</div>
+			</form>
+			<%}	}%>
 			<div class="row">
 				<div class="col-md-8">
 					<article>
@@ -76,28 +90,30 @@ pageEncoding="ISO-8859-1"%>
 						<li class="previous"><a href="/blogHome">&larr; Back to posts</a></li>
 					</ul>	
 				<!-- Comment form -->
-					
+				<%
+				   if(cookies.length>1)
+					if(!name.isEmpty()) {%>
 					<div class="well">
 						<h4>Leave a comment</h4>
-						<form role="form" class="clearfix">
+						<form role="form" class="clearfix" ng-click="commentOnBlog({{blogs.userId}},{{blogs.blogId}})">
 						  <div class="col-md-6 form-group">
 						    <label class="sr-only" for="name">Name</label>
-						    <input type="text" class="form-control" id="name" placeholder="Name">
-						  </div>
-						  <div class="col-md-6 form-group">
-						    <label class="sr-only" for="email">Email</label>
-						    <input type="email" class="form-control" id="email" placeholder="Email">
-						  </div>
+						    <%=name%>
+						  </div>						   
 						  <div class="col-md-12 form-group">
 						    <label class="sr-only" for="email">Comment</label>
 						    <textarea class="form-control" id="comment" placeholder="Comment"></textarea>
 						  </div>
-						  <div class="col-md-12 form-group text-right">
+						  <div class="col-md-6 form-group text-ledt">
+						  		<i class="fa fa-thumbs-up fa-lg" aria-hidden="true"   ng-click="likeBlog({{blogs.userId}},{{blogs.blogId}})">&nbsp;&nbsp;&nbsp;Like</i> &nbsp;&nbsp; &nbsp;&nbsp;
+				          		<i class="fa fa-thumbs-down fa-lg" aria-hidden="true" ng-click="disLikeBlog({{blogs.userId}},{{blogs.blogId}})">&nbsp;&nbsp;&nbsp;Dislike</i>
+				          	</div>
+						  <div class="col-md-6 form-group text-right">
 						  	<button type="submit" class="btn btn-primary">Submit</button>
 						  </div>
 						</form>					
-					</div>
-
+					</div> 
+					<%}%>
 					<hr />
 				<!-- Displays the latest comments on the blog  -->
 					<h3><em> Recent Comments -</em></h3>

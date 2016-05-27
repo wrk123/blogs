@@ -4,6 +4,7 @@ blogspot.controller('blogController',function($scope,$http){
 		
 	$http.defaults.headers.post["Content-Type"] = "application/json";
 	
+	//get all the blogs from the database 
 	$http.get(urlBase+'/home')
 	.success(function(data){
 		 $scope.blog = data;
@@ -13,6 +14,7 @@ blogspot.controller('blogController',function($scope,$http){
 	});
 	
 	
+	//fetches details of a single blog 
 	$scope.fetchOneBlog = function (id) {
 		$http.get(urlBase+'/blog/'+id)
 		.success(function(data){
@@ -23,6 +25,7 @@ blogspot.controller('blogController',function($scope,$http){
 		});
 	};
 	
+	//for fetching blog when asked for single page article
 	$scope.init = function(id){
 		$scope.fetchOneBlog(id);
 	}

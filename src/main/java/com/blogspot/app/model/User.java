@@ -2,6 +2,7 @@ package com.blogspot.app.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -42,7 +44,7 @@ public class User implements Serializable{
 		
 	  @Temporal(TemporalType.TIMESTAMP)
 	  private Date lastModifiedTime;
-	
+		  
 	  @NotNull
 	  @Column(name="user_password")
 	  private String password;
@@ -116,7 +118,7 @@ public class User implements Serializable{
 		public void setLastModifiedTime(Date lastModifiedTime) {
 			this.lastModifiedTime = lastModifiedTime;
 		}
-		
+				
 		public String getPassword() {
 			return password;
 		}

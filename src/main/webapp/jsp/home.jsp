@@ -23,6 +23,21 @@ pageEncoding="ISO-8859-1"%>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
 	</head>
+	<%
+	 //  Cookie cookie = null;
+	   Cookie[] cookies = null;
+	   // Get an array of Cookies associated with this domain
+	   cookies = request.getCookies();
+	   if( cookies != null ){
+	      
+	      for (int i = 1; i < cookies.length; i++){
+	         //cookie = cookies[i];
+	    //     out.print("Name : " + cookies[i].getName() + " <br/>");
+	       //  out.print("Value: " + cookies[i].getValue()+" <br/>");
+	      }
+	   }
+	%>
+	
 	<body ng-controller="blogController">
 		<!-- Header -->
 		<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">			
@@ -49,11 +64,21 @@ pageEncoding="ISO-8859-1"%>
 					</ul>
 				</nav>
 			</div>
-		</header>
-		
-		
+		</header>		
+		<!--  -->
 		<div class="container">
-			<div class="row">
+		<%	if(cookies.length>1)
+				if(!cookies[1].getValue().isEmpty())
+				{%>
+			<!-- add Logout -->
+			<form class="navbar-form navbar-right">
+				<div class="form-group">
+					<h4> Welcome <%=cookies[1].getValue()%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
+				</div>
+			</form>
+			<%}
+			%> <br/><br/>
+			<div class="row">			
 				<div class="col-md-8">
 					<h1>Latest Posts</h1>
 					<article ng-repeat="blogs in blog | filter:searchBlog">

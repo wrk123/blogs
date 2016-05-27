@@ -1,5 +1,7 @@
 package com.blogspot.app.controller;
 
+import javax.servlet.http.Cookie;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,8 +42,8 @@ public class WelcomeController {
 		user=userDAO.findById(id);
 		System.out.println(user);
 		ModelAndView model=null;
-		
 		SessionToken session=session=authTokenDAO.findByUserId(id);
+		
 		if(session.getAuthToken()!=null){
 			if(user.hashCode()== session.getAuthToken())
 			{ 

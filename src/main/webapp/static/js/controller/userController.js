@@ -97,6 +97,18 @@ user.controller('usersController',function($scope,$http){
 		$http.post(urlBase + '/auth/login/',$scope.user)
 	 	.success(function(data) {
 	 		$scope.user = data;	 		
+	 		
+	 		//set the cookie value 
+	 		var now = new Date();
+	 		var time = now.getTime();
+	 		time += 3600 * 1000;
+	 		now.setTime(time);
+	 		
+	 		
+	 		document.cookie="name=" + $scope.user.name;
+            document.cookie="email=" + $scope.user.email;
+	 		document.cookie ="expires=" + now.toGMTString();
+            	
 	 		window.location="/profile/"+$scope.user.id;
 	 	})
 	 	.error(function(data, status) {
@@ -106,10 +118,15 @@ user.controller('usersController',function($scope,$http){
 	
 	//user logout function
 	$scope.logout = function () {
+		
 		$http.post(urlBase + '/auth/logout/',$scope.user)
 	 	.success(function(data) {
-	 		$scope.blog = {}; 
+	 		//$scope.blog = {}; 
+	 		//delete a cookie on logout 	 		
+	 			document.cookie = "name=;email=;expires=Thu, 18 Dec 2013 12:00:00 GMT";
+			
 	 		window.location="/";
+	 		
 	 	})
 	 	.error(function(data, status) {
 			console.error(' line 115 error', status, data);
@@ -158,7 +175,7 @@ user.controller('usersController',function($scope,$http){
 	};
 
 	//click to like a blog
-	$scope.likeBlog = function() {
+	$scope.likeBlog = function(id,blogId) {
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/like')
 	 	     .success(function(data) {
 	 	    	 $scope.blog = data; 
@@ -213,11 +230,10 @@ user.controller('usersController',function($scope,$http){
 	 $scope.reset = function () {
 		 $scope.selected = {};
 	 };
-	 
-	 
-	 
+	
 	 $scope.init = function(id){
 			$scope.getOneUser(id);
 			$scope.getOneUsersAllBlogs(id);
+			
 		}
 });
