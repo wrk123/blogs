@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
 pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.net.URLDecoder"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html ng-app="blogspotApp">
 	<head>
-		<title>Blog articles </title>
+		<title>Blog in detail</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,6 +25,7 @@ pageEncoding="ISO-8859-1"%>
 	</head>
 	<body ng-controller="blogController">
 		<!-- Header -->
+		
 		<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">			
 			<div class="container">
 				<div class="navbar-header">
@@ -52,39 +54,57 @@ pageEncoding="ISO-8859-1"%>
 			<%	
 			  Cookie[] cookies = request.getCookies();
 				String name="";
+				String id="";
+				String email="";
+				out.println(email);
+				
 			if(cookies.length>1)
-			 { name=cookies[1].getValue();
-				if(!name.isEmpty())
+			 {  id=cookies[1].getValue();
+			 	name=cookies[2].getValue();
+			 	email=URLDecoder.decode(cookies[3].getValue(),"UTF-8");
+			 	out.println(email);
+			 	if(!name.isEmpty())
 				{%>
 			<!-- add Logout -->
 			<form class="navbar-form navbar-right">
 				<div class="form-group">
-					<h4> Welcome <%=cookies[1].getValue()%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
+					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
 				</div>
 			</form>
 			<%}	}%>
 			<div class="row">
 				<div class="col-md-8">
 					<article>
-						<h2>{{ blogs.blogTitle}}</h2></a>
+						<h2>{{ blog.blogTitle}}</h2></a>
 				        <div class="row">
 				          	<div class="col-sm-6 col-md-6">author -
-				          	<em>	{{ blogs.user.name }} </em>
+				          	<em>	{{ blog.user.name }} </em>
 				          	</div>
 				          	<div class="col-sm-6 col-md-6">
-				          		<a href="/jsp/articleDetails.jsp?{{ blogs.blogId }}"><span class="glyphicon glyphicon-pencil"></span></a>
-				          		&nbsp;&nbsp;  	{{ blogs.review.length }} Comments	          		
-				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blogs.creationTime | date:'medium'}}			          		
+				          		<span class="glyphicon glyphicon-pencil"></span>
+				          		&nbsp;&nbsp;  	{{ blog.review.length }} Comments	          		
+				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blog.creationTime | date:'medium'}}			          		
 				          	</div>
 				          </div>
 				          <hr>
 	                      <br />		        
-						  	 <p>{{ blogs.blogContent}}</p> 
+						  	 <p>{{ blog.blogContent }}</p> 
 				          <hr>
+				         <%  
+			         if(cookies.length>1)
+		 				{ 	if(!name.isEmpty())
+							{%> 
+						 <div class="col-md-6 form-group text-ledt">
+						  	<a href="" ng-click="likeBlog(<%=id%>,{{blog.blogId}})"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Like &nbsp;&nbsp; {{ blog.blogLikes }}</i></a> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<a href="" ng-click="disLikeBlog(<%=id%>,{{blog.blogId}})"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Dislike &nbsp;&nbsp; {{ blog.blogDislikes }}</i></a>
+				         </div>
+				          <%  }}else{ %>
 				          <div>
-				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
-				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogDislikes }}</i>
+				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blog.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blog.blogDislikes }}</i>
 				          </div>
+				          <%   } %>
+				          <br/>
 					</article>	
 					<ul class="pager">
 						<li class="previous"><a href="/blogHome">&larr; Back to posts</a></li>
@@ -95,7 +115,7 @@ pageEncoding="ISO-8859-1"%>
 					if(!name.isEmpty()) {%>
 					<div class="well">
 						<h4>Leave a comment</h4>
-						<form role="form" class="clearfix" ng-click="commentOnBlog({{blogs.userId}},{{blogs.blogId}})">
+						<form role="form" class="clearfix"   ng-click="commentOnBlog(<%=id%>,{{blog.blogId}})"> 
 						  <div class="col-md-6 form-group">
 						    <label class="sr-only" for="name">Name</label>
 						    <%=name%>
@@ -104,11 +124,7 @@ pageEncoding="ISO-8859-1"%>
 						    <label class="sr-only" for="email">Comment</label>
 						    <textarea class="form-control" id="comment" placeholder="Comment"></textarea>
 						  </div>
-						  <div class="col-md-6 form-group text-ledt">
-						  		<i class="fa fa-thumbs-up fa-lg" aria-hidden="true"   ng-click="likeBlog({{blogs.userId}},{{blogs.blogId}})">&nbsp;&nbsp;&nbsp;Like</i> &nbsp;&nbsp; &nbsp;&nbsp;
-				          		<i class="fa fa-thumbs-down fa-lg" aria-hidden="true" ng-click="disLikeBlog({{blogs.userId}},{{blogs.blogId}})">&nbsp;&nbsp;&nbsp;Dislike</i>
-				          	</div>
-						  <div class="col-md-6 form-group text-right">
+						  <div class="col-md-12 form-group text-right">
 						  	<button type="submit" class="btn btn-primary">Submit</button>
 						  </div>
 						</form>					
@@ -118,7 +134,7 @@ pageEncoding="ISO-8859-1"%>
 				<!-- Displays the latest comments on the blog  -->
 					<h3><em> Recent Comments -</em></h3>
 					<ul id="comments" class="comments">
-						<li class="comment" ng-repeat="review in blogs.review">
+						<li class="comment" ng-repeat="review in blog.review">
 							<div class="clearfix">
 								<h5 class="pull-left"> ID: {{ review.userId }} </h5>
 								<p class="pull-right">{{ review.creationTime | date:'medium' }}</p>
@@ -137,7 +153,7 @@ pageEncoding="ISO-8859-1"%>
 						<div class="panel-heading">
 							<h3>Latest Posts</h4>
 						</div>
-						<ul class="list-group" ng-repeat="blogs in blog | limitTo:7 ">
+						<ul class="list-group" ng-repeat="blogs in blog | limitTo:6 ">
 							<li class="list-group-item"><a href="/article/{{ blogs.blogId }}">{{blogs.blogTitle}}</li>
 						</ul>
 					</div>			
@@ -145,5 +161,23 @@ pageEncoding="ISO-8859-1"%>
 			 <!-- Right Side panel -->
 			</div>
 		</div>
+		<!-- <script type="text/javascript">			 
+			 var name="",value="";
+			 var allcookies = document.cookie;
+			 var email="";
+			 
+             // Get all the cookies pairs in an array
+             cookiearray = allcookies.split(';');
+             for(var i=0; i<cookiearray.length; i++){
+				name =  cookiearray[i].split('=')[0];
+            	name=name.replace(/\s/g, '');
+				if(name=="email"){
+            		 value = decodeURIComponent(cookiearray[i].split('=')[1]);
+            		 email=value; 
+            	}else 
+            		value = cookiearray[i].split('=')[1];
+			}
+             
+		</script> -->
 	</body>
 </html>

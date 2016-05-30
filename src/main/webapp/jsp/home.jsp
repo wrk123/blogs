@@ -28,14 +28,8 @@ pageEncoding="ISO-8859-1"%>
 	   Cookie[] cookies = null;
 	   // Get an array of Cookies associated with this domain
 	   cookies = request.getCookies();
-	   if( cookies != null ){
-	      
-	      for (int i = 1; i < cookies.length; i++){
-	         //cookie = cookies[i];
-	    //     out.print("Name : " + cookies[i].getName() + " <br/>");
-	       //  out.print("Value: " + cookies[i].getValue()+" <br/>");
-	      }
-	   }
+	   String name="",id="",email="";
+	   
 	%>
 	
 	<body ng-controller="blogController">
@@ -67,22 +61,25 @@ pageEncoding="ISO-8859-1"%>
 		</header>		
 		<!--  -->
 		<div class="container">
-		<%	if(cookies.length>1)
+		<%	if(cookies.length>1){
+			    id=cookies[1].getValue();
+			 	name=cookies[2].getValue();
+				email=cookies[3].getValue();
 				if(!cookies[1].getValue().isEmpty())
 				{%>
 			<!-- add Logout -->
 			<form class="navbar-form navbar-right">
 				<div class="form-group">
-					<h4> Welcome <%=cookies[1].getValue()%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
+					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
 				</div>
 			</form>
-			<%}
-			%> <br/><br/>
+			<%}}%>
+			<br/><br/>
 			<div class="row">			
 				<div class="col-md-8">
 					<h1>Latest Posts</h1>
 					<article ng-repeat="blogs in blog | filter:searchBlog">
-						<a href="/jsp/articleDetails.jsp?id={{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
+						<a href="/article/{{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
 				        <div class="row">
 				          	<div class="col-sm-6 col-md-6">author -
 				          	<em>	{{ blogs.user.name }} </em>
@@ -112,5 +109,9 @@ pageEncoding="ISO-8859-1"%>
 				</div>				
 			</div>
 		</div>
+		<script style="text/javascript">
+			user.id=<%=id%>;
+			user.email=<%=email%>;
+		</script>
 	</body>
 </html>

@@ -104,15 +104,16 @@ user.controller('usersController',function($scope,$http){
 	 		time += 3600 * 1000;
 	 		now.setTime(time);
 	 		
-	 		
-	 		document.cookie="name=" + $scope.user.name;
-            document.cookie="email=" + $scope.user.email;
-	 		document.cookie ="expires=" + now.toGMTString();
-            	
-	 		window.location="/profile/"+$scope.user.id;
+	 		document.cookie="id="+$scope.user.id+";expires="+now.toGMTString()+";path=/";
+	 		document.cookie="name="+$scope.user.name+";expires="+now.toGMTString()+";path=/";
+	 	   document.cookie="email="+encodeURIComponent($scope.user.email)+";expires="+now.toGMTString()+";path=/";
+	 	   
+	 	    
+	 	   
+	 	    window.location="/profile/"+$scope.user.id;
 	 	})
 	 	.error(function(data, status) {
-			console.error(' line 103 error', status,'data is ', data);
+			console.error(' line 103 error', status,'data is :',data);
 		});
 	};
 	
@@ -123,8 +124,10 @@ user.controller('usersController',function($scope,$http){
 	 	.success(function(data) {
 	 		//$scope.blog = {}; 
 	 		//delete a cookie on logout 	 		
-	 			document.cookie = "name=;email=;expires=Thu, 18 Dec 2013 12:00:00 GMT";
-			
+	 		document.cookie="id=;expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";
+	 		document.cookie = "name=; expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";
+	        document.cookie = "email=;expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";
+	 		
 	 		window.location="/";
 	 		
 	 	})

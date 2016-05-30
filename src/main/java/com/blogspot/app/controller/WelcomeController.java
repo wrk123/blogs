@@ -61,6 +61,8 @@ public class WelcomeController {
 	@RequestMapping(value="/blogHome")
 	public ModelAndView blogHome(){
 		ModelAndView model = new ModelAndView("/jsp/home.jsp");		
+
+		
 		return model;
 	}
 	
@@ -68,6 +70,7 @@ public class WelcomeController {
 	@RequestMapping(value="/article/{id}")
 	public ModelAndView blogArticle(@PathVariable Long id ){
 		Blog blogs=blogRepo.findOne(id);
+		
 		
 		ModelAndView model = new ModelAndView("/jsp/articleDetails.jsp");		
 		model.addObject("blogs",blogs);

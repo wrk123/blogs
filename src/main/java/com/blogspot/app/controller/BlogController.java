@@ -253,7 +253,7 @@ public class BlogController {
 		return new  ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
 	}
 	
-	
+	//fetch one blog details
 	@RequestMapping(value="/blog/{id}",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Blog> fetchOneBlog(@PathVariable Long id){
 		Blog blog=null;
