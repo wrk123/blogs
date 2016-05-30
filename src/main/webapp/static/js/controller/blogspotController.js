@@ -18,7 +18,7 @@ blogspot.controller('blogController',function($scope,$http){
 	$scope.fetchOneBlog = function (id) {
 		$http.get(urlBase+'/blog/'+id)
 		.success(function(data){
-			$scope.blog = data;
+			$scope.blogs = data;
 		})
 		.error(function(data, status) {
 			console.error('line 21 b :', status, data);

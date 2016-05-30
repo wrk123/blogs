@@ -75,33 +75,33 @@ pageEncoding="ISO-8859-1"%>
 			<div class="row">
 				<div class="col-md-8">
 					<article>
-						<h2>{{ blog.blogTitle}}</h2></a>
+						<h2>{{ blogs.blogTitle}}</h2></a>
 				        <div class="row">
 				          	<div class="col-sm-6 col-md-6">author -
-				          	<em>	{{ blog.user.name }} </em>
+				          	<em>	{{ blogs.user.name }} </em>
 				          	</div>
 				          	<div class="col-sm-6 col-md-6">
 				          		<span class="glyphicon glyphicon-pencil"></span>
-				          		&nbsp;&nbsp;  	{{ blog.review.length }} Comments	          		
-				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blog.creationTime | date:'medium'}}			          		
+				          		&nbsp;&nbsp;  	{{ blogs.review.length }} Comments	          		
+				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blogs.creationTime | date:'medium'}}			          		
 				          	</div>
 				          </div>
 				          <hr>
 	                      <br />		        
-						  	 <p>{{ blog.blogContent }}</p> 
+						  	 <p>{{ blogs.blogContent }}</p> 
 				          <hr>
 				         <%  
 			         if(cookies.length>1)
 		 				{ 	if(!name.isEmpty())
 							{%> 
 						 <div class="col-md-6 form-group text-ledt">
-						  	<a href="" ng-click="likeBlog(<%=id%>,{{blog.blogId}})"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Like &nbsp;&nbsp; {{ blog.blogLikes }}</i></a> &nbsp;&nbsp; &nbsp;&nbsp;
-				          	<a href="" ng-click="disLikeBlog(<%=id%>,{{blog.blogId}})"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Dislike &nbsp;&nbsp; {{ blog.blogDislikes }}</i></a>
+						  	<a href="" ng-click="likeBlog(<%=id%>,blogs.blogId)"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Like &nbsp;&nbsp; {{blogs.blogLikes}}</i></a> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<a href="" ng-click="disLikeBlog(<%=id%>,blogs.blogId)"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Dislike &nbsp;&nbsp; {{blogs.blogDislikes}}</i></a>
 				         </div>
 				          <%  }}else{ %>
 				          <div>
-				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blog.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
-				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blog.blogDislikes }}</i>
+				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogDislikes }}</i>
 				          </div>
 				          <%   } %>
 				          <br/>
@@ -115,7 +115,7 @@ pageEncoding="ISO-8859-1"%>
 					if(!name.isEmpty()) {%>
 					<div class="well">
 						<h4>Leave a comment</h4>
-						<form role="form" class="clearfix"   ng-click="commentOnBlog(<%=id%>,{{blog.blogId}})"> 
+						<form role="form" class="clearfix"   ng-click="commentOnBlog(<%=id%>,blogs.blogId)"> 
 						  <div class="col-md-6 form-group">
 						    <label class="sr-only" for="name">Name</label>
 						    <%=name%>
@@ -134,7 +134,7 @@ pageEncoding="ISO-8859-1"%>
 				<!-- Displays the latest comments on the blog  -->
 					<h3><em> Recent Comments -</em></h3>
 					<ul id="comments" class="comments">
-						<li class="comment" ng-repeat="review in blog.review">
+						<li class="comment" ng-repeat="review in blogs.review">
 							<div class="clearfix">
 								<h5 class="pull-left"> ID: {{ review.userId }} </h5>
 								<p class="pull-right">{{ review.creationTime | date:'medium' }}</p>
@@ -153,8 +153,8 @@ pageEncoding="ISO-8859-1"%>
 						<div class="panel-heading">
 							<h3>Latest Posts</h4>
 						</div>
-						<ul class="list-group" ng-repeat="blogs in blog | limitTo:6 ">
-							<li class="list-group-item"><a href="/article/{{ blogs.blogId }}">{{blogs.blogTitle}}</li>
+						<ul class="list-group" ng-repeat="blog in blogs | limitTo:6 ">
+							<li class="list-group-item"><a href="/article/{{ blog.blogId }}">{{blog.blogTitle}}</li>
 						</ul>
 					</div>			
 				</div>
