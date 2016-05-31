@@ -110,8 +110,8 @@ pageEncoding="ISO-8859-1"%>
 			</div>
 		</div>
 		<script style="text/javascript">
-			user.id=<%=id%>;
-			user.email=<%=email%>;
+			var id=<%=id%>;
+			var email=<%=email%>;
 		</script>
 	</body>
 </html>

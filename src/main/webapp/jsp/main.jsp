@@ -43,7 +43,6 @@ pageEncoding="ISO-8859-1"%>
 		        <li><a href="#details" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Details</a></li>
 		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<c:out value="${id}"/>)">View Blogs</a></li>
 		        <li><a href="#CreateBlogs" data-toggle="tab" >Create Blog</a></li>
-		        <li><a href="#ReviewBlogs" data-toggle="tab" >Review Blogs</a></li>
 		        <form class="navbar-form navbar-right">
 					<div class="form-group">
 						<h4> Welcome  {{ user.name }} ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
@@ -146,29 +145,7 @@ pageEncoding="ISO-8859-1"%>
 						<button type="submit"  class="btn btn-primary"> Create </button>
 					</form>
 				</div>
-				
-				<!-- Review others blogs  -->
-				<div class="tab-pane" id="ReviewBlogs">
-					<h1>Latest Posts</h1>
-					<article ng-repeat="blogs in blog | filter:searchBlog">
-						<a href="/jsp/articleDetails.jsp?id={{ blogs.blogId }}"></a><h3>{{ blogs.blogTitle}}</h3></a>
-				        <div class="row">
-				          	<div class="col-sm-6 col-md-6">author -
-				          	<em>	{{ blogs.user.name }} </em>
-				          	</div>
-				          	<div class="col-sm-6 col-md-6">
-				          		<a href="/article/{{ blogs.blogId }}"><span class="glyphicon glyphicon-pencil"></span></a>
-				          		&nbsp;&nbsp;  	{{ blogs.review.length }} Comments	          		
-				          		&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;{{ blogs.creationTime | date:'medium'}}			          		
-				          	</div>
-				          </div>
-				          <hr>
-				          <br/>
-				          <p>{{ blogs.blogContent}}</p>
-				          <hr>
-					</article>
-				</div>
-				</div> <!-- container -->
+			</div> <!-- container -->
 			</div>
 		</div>
 	<!-- tab operations  -->

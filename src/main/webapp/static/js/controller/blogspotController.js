@@ -63,6 +63,42 @@ blogspot.controller('blogController',function($scope,$http){
 	};
 	
 	
+	//click to comment on a blog 
+	$scope.commentOnBlog = function(id,blogId) {		
+		$http.post(urlBase + '/user/'+id+'/blogpost/'+blogId+'/comment/',$scope.review)
+	 	.success(function(data) {	 		
+	 		$scope.blogs = data; 
+	 		$scope.review={};
+	 	})
+	 	.error(function(data, status) {
+			console.error(' line 155 error', status, data);
+		});
+	};
+
+	//click to like a blog
+	$scope.likeBlog = function(id,blogId) {		
+		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/like')
+	 	     .success(function(data) {
+	 	    	 $scope.blogs = data; 	 	    	 
+	 	     })
+	 	    .error(function(data, status) {
+				console.error(' line 165 error', status, data);
+			});
+	};
+	
+	//click to  dislike a blog
+	$scope.disLikeBlog = function(id,blogId) {
+		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/dislike')
+	 	.success(function(data) {
+	 		$scope.blogs = data; 
+	 	})
+	 	.error(function(data, status) {
+			console.error(' line 176 error', status, data);
+		});
+	};
+	
+	
+	
 	//for fetching blog when asked for single page article
 	$scope.init = function(id){
 		$scope.fetchOneBlog(id);	

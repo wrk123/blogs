@@ -3,8 +3,6 @@ package com.blogspot.app.controller;
 
 import java.util.Date;
 import java.util.List;
-
-import org.neo4j.cypher.internal.compiler.v2_2.planner.logical.greedy.findShortestPaths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -125,7 +123,7 @@ public class BlogController {
 		user.setCredit(score);
 		userDAO.save(user);
 															//save the comments
-		comment=new Review(review.getComments(),new Date(),user.getId(), blogId);
+		comment=new Review(review.getComments(),new Date(),userId, blogId);
 		reviewRepo.save(comment); 
 	
 		return new ResponseEntity<Blog>(blogs,HttpStatus.OK);

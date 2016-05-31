@@ -96,7 +96,7 @@ pageEncoding="ISO-8859-1"%>
 						  	 <p>{{ blogs.blogContent }}</p> 
 				          <hr>
 				         <%  
-			         if(!cookieId.equals(pageContext.getAttribute("userId").toString()))
+			         if(cookies.length>1 && !cookieId.equals(pageContext.getAttribute("userId").toString()))
 		 				{ 	if(!name.isEmpty())
 							{%> 
 						 <div class="col-md-6 form-group text-ledt">
@@ -117,22 +117,22 @@ pageEncoding="ISO-8859-1"%>
 					</ul>	
 				<!-- Comment form -->
 				<%
-				   if(!cookieId.equals(pageContext.getAttribute("userId").toString())){
+				   if(cookies.length>1 &&  !cookieId.equals(pageContext.getAttribute("userId").toString())){
 					  
 					if(!name.isEmpty()) {%>
 					<div class="well">
 						<h4>Leave a comment</h4>
-						<form role="form" class="clearfix"   ng-click="commentOnBlog(<%=cookieId%>,<c:out value="${id}"/>)"> 
+						<form role="form" class="clearfix"> 
 						  <div class="col-md-6 form-group">
 						    <label class="sr-only" for="name">Name</label>
 						    <%=name%>
 						  </div>						   
 						  <div class="col-md-12 form-group">
 						    <label class="sr-only" for="email">Comment</label>
-						    <textarea class="form-control" id="comment" placeholder="Comment"></textarea>
+						    <textarea class="form-control" ng-model="review.comments" placeholder="Comment"></textarea>
 						  </div>
 						  <div class="col-md-12 form-group text-right">
-						  	<button type="submit" class="btn btn-primary">Submit</button>
+						  	<button type="submit" ng-click="commentOnBlog(<%=cookieId%>,<c:out value="${id}"/>)" class="btn btn-primary">Submit</button>
 						  </div>
 						</form>					
 					</div> 
@@ -144,7 +144,7 @@ pageEncoding="ISO-8859-1"%>
 						<li class="comment" ng-repeat="review in blogs.review">
 							<div class="clearfix">
 								<h5 class="pull-left"> ID: {{ review.userId }} </h5>
-								<p class="pull-right">{{ review.creationTime | date:'medium' }}</p>
+								<p class="pull-right"><em>Commented on : &nbsp;{{ review.creationTime | date:'medium' }}</em></p>
 							</div>
 							<p>
 								<em>{{ review.comments }}</em>
