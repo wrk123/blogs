@@ -106,7 +106,7 @@ user.controller('usersController',function($scope,$http){
 	 		
 	 		document.cookie="id="+$scope.user.id+";expires="+now.toGMTString()+";path=/";
 	 		document.cookie="name="+$scope.user.name+";expires="+now.toGMTString()+";path=/";
-	 	   document.cookie="email="+encodeURIComponent($scope.user.email)+";expires="+now.toGMTString()+";path=/";
+	 	    document.cookie="email="+encodeURIComponent($scope.user.email)+";expires="+now.toGMTString()+";path=/";
 	 	   
 	 	    
 	 	   

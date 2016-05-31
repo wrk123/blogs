@@ -57,23 +57,21 @@ pageEncoding="ISO-8859-1"%>
 				String name="";
 				String cookieId="";
 				String email="";				
-			//	Object userId=pageContext.getAttribute("userId");
-			/* 	for(int i=0;i<cookies.length;i++){
-					out.println(" cookies["+i+"]"+cookies[i].getValue());
-				} */
-				
-				
+			
 			if(cookies.length>1)
 			 {  cookieId=cookies[1].getValue();
 			 	name=cookies[2].getValue();
-			 	email=URLDecoder.decode(cookies[3].getValue(),"UTF-8");
+			 	email=cookies[3].getValue();
+			 	email=email.replace("%40","@");
 			 	
+			 	//email=URLDecoder.decode(cookies[3].getValue(),"UTF-8");
+			 	//email=email.replace("%40","@");
 			 	if(!name.isEmpty())
 				{%>
 			<!-- add Logout -->
 			<form class="navbar-form navbar-right">
 				<div class="form-group">
-					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>
+					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout(\"<%=email%>\")'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>
 				</div>
 			</form>
 			<%}	}%>
