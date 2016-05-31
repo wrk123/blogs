@@ -168,9 +168,10 @@ user.controller('usersController',function($scope,$http){
 	
 	//click to comment on a blog 
 	$scope.commentOnBlog = function(id,blogId) {
-		console.log(id,blogId);
-		$http.post(urlBase + '/user/'+id+'/blogpost/'+blogId+'/comment/'+review)
+		console.log(":: Inside userId and blogId :: "+id,blogId);
+		$http.post(urlBase + '/user/'+id+'/blogpost/'+blogId+'/comment/',review)
 	 	.success(function(data) {
+	 		console.log(data);
 	 		$scope.blogs = data; 
 	 	})
 	 	.error(function(data, status) {
@@ -180,7 +181,7 @@ user.controller('usersController',function($scope,$http){
 
 	//click to like a blog
 	$scope.likeBlog = function(id,blogId) {
-		console.log(id,blogId);
+		console.log(":: Inside userId and blogId :: "+id,blogId);
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/like')
 	 	     .success(function(data) {
 	 	    	 $scope.blogs = data; 
@@ -192,7 +193,7 @@ user.controller('usersController',function($scope,$http){
 	
 	//click to  dislike a blog
 	$scope.disLikeBlog = function(id,blogId) {
-		console.log(id,blogId);
+		console.log(":: Inside userId and blogId :: "+id,blogId);
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/dislike')
 	 	.success(function(data) {
 	 		$scope.blogs = data; 

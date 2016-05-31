@@ -48,27 +48,32 @@ pageEncoding="ISO-8859-1"%>
 		</header>
 		<c:if test="${not empty blogs}">
 			<c:set var="id" scope="session" value="${blogs.blogId}"/>
+			<c:set var="userId" value="${blogs.userId}"/>
 		</c:if>
 		
 		<div class="container"  ng-init="init(<c:out value="${id}"/>)">
 			<%	
 			  Cookie[] cookies = request.getCookies();
 				String name="";
-				String id="";
-				String email="";
-				out.println(email);
+				String cookieId="";
+				String email="";				
+			//	Object userId=pageContext.getAttribute("userId");
+			/* 	for(int i=0;i<cookies.length;i++){
+					out.println(" cookies["+i+"]"+cookies[i].getValue());
+				} */
+				
 				
 			if(cookies.length>1)
-			 {  id=cookies[1].getValue();
+			 {  cookieId=cookies[1].getValue();
 			 	name=cookies[2].getValue();
 			 	email=URLDecoder.decode(cookies[3].getValue(),"UTF-8");
-			 	out.println(email);
+			 	
 			 	if(!name.isEmpty())
 				{%>
 			<!-- add Logout -->
 			<form class="navbar-form navbar-right">
 				<div class="form-group">
-					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
+					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>
 				</div>
 			</form>
 			<%}	}%>
@@ -91,17 +96,18 @@ pageEncoding="ISO-8859-1"%>
 						  	 <p>{{ blogs.blogContent }}</p> 
 				          <hr>
 				         <%  
-			         if(cookies.length>1)
+			         if(!cookieId.equals(pageContext.getAttribute("userId").toString()))
 		 				{ 	if(!name.isEmpty())
 							{%> 
 						 <div class="col-md-6 form-group text-ledt">
-						  	<a href="" ng-click="likeBlog(<%=id%>,blogs.blogId)"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Like &nbsp;&nbsp; {{blogs.blogLikes}}</i></a> &nbsp;&nbsp; &nbsp;&nbsp;
-				          	<a href="" ng-click="disLikeBlog(<%=id%>,blogs.blogId)"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Dislike &nbsp;&nbsp; {{blogs.blogDislikes}}</i></a>
+						 	
+						  	<a ng-click="likeBlog(<%=cookieId%>,<c:out value="${id}"/>)"><i class="fa fa-thumbs-o-up fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Like &nbsp;&nbsp; {{blogs.blogLikes}}</i></a> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<a ng-click="disLikeBlog(<%=cookieId%>,<c:out value="${id}"/>)"><i class="fa fa-thumbs-o-down fa-lg" aria-hidden="true">&nbsp;&nbsp;&nbsp;Dislike &nbsp;&nbsp; {{blogs.blogDislikes}}</i></a>
 				         </div>
 				          <%  }}else{ %>
 				          <div>
-				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
-				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp; {{ blogs.blogDislikes }}</i>
+				          	<i class="fa fa-thumbs-up fa-lg" aria-hidden="true">&nbsp;&nbsp;Likes       {{ blogs.blogLikes }}</i> &nbsp;&nbsp; &nbsp;&nbsp;
+				          	<i class="fa fa-thumbs-down fa-lg" aria-hidden="true">&nbsp;&nbsp;Dislikes  {{ blogs.blogDislikes }}</i>
 				          </div>
 				          <%   } %>
 				          <br/>
@@ -111,11 +117,12 @@ pageEncoding="ISO-8859-1"%>
 					</ul>	
 				<!-- Comment form -->
 				<%
-				   if(cookies.length>1)
+				   if(!cookieId.equals(pageContext.getAttribute("userId").toString())){
+					  
 					if(!name.isEmpty()) {%>
 					<div class="well">
 						<h4>Leave a comment</h4>
-						<form role="form" class="clearfix"   ng-click="commentOnBlog(<%=id%>,blogs.blogId)"> 
+						<form role="form" class="clearfix"   ng-click="commentOnBlog(<%=cookieId%>,<c:out value="${id}"/>)"> 
 						  <div class="col-md-6 form-group">
 						    <label class="sr-only" for="name">Name</label>
 						    <%=name%>
@@ -129,7 +136,7 @@ pageEncoding="ISO-8859-1"%>
 						  </div>
 						</form>					
 					</div> 
-					<%}%>
+					<%} }%>
 					<hr />
 				<!-- Displays the latest comments on the blog  -->
 					<h3><em> Recent Comments -</em></h3>
@@ -153,31 +160,13 @@ pageEncoding="ISO-8859-1"%>
 						<div class="panel-heading">
 							<h3>Latest Posts</h4>
 						</div>
-						<ul class="list-group" ng-repeat="blog in blogs | limitTo:6 ">
-							<li class="list-group-item"><a href="/article/{{ blog.blogId }}">{{blog.blogTitle}}</li>
+						<ul class="list-group" ng-repeat="blogs in blog | limitTo:6 ">
+							<li class="list-group-item"><a href="/article/{{ blogs.blogId }}">{{blogs.blogTitle}}</li>
 						</ul>
 					</div>			
 				</div>
 			 <!-- Right Side panel -->
 			</div>
 		</div>
-		<!-- <script type="text/javascript">			 
-			 var name="",value="";
-			 var allcookies = document.cookie;
-			 var email="";
-			 
-             // Get all the cookies pairs in an array
-             cookiearray = allcookies.split(';');
-             for(var i=0; i<cookiearray.length; i++){
-				name =  cookiearray[i].split('=')[0];
-            	name=name.replace(/\s/g, '');
-				if(name=="email"){
-            		 value = decodeURIComponent(cookiearray[i].split('=')[1]);
-            		 email=value; 
-            	}else 
-            		value = cookiearray[i].split('=')[1];
-			}
-             
-		</script> -->
 	</body>
 </html>
