@@ -63,15 +63,13 @@ pageEncoding="ISO-8859-1"%>
 			 	name=cookies[2].getValue();
 			 	email=cookies[3].getValue();
 			 	email=email.replace("%40","@");
-			 	
-			 	//email=URLDecoder.decode(cookies[3].getValue(),"UTF-8");
-			 	//email=email.replace("%40","@");
 			 	if(!name.isEmpty())
-				{%>
+				{ 
+				  %>
 			<!-- add Logout -->
 			<form class="navbar-form navbar-right">
 				<div class="form-group">
-					<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click='logout(\"<%=email%>\")'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>
+				 	<h4> Welcome <%=name%> ! &nbsp; &nbsp;<a  ng-click="logout('<%=email%>')"><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>
 				</div>
 			</form>
 			<%}	}%>

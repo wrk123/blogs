@@ -39,13 +39,10 @@ blogspot.controller('blogController',function($scope,$http){
 	
 	
 	//user logout function
-	$scope.logout = function (email) {
+	$scope.logout = function(email) {
 		
 		console.log(email);
-		$scope.user="";
-		$scope.user.email=email;
-		console.log($scope.user.email);
-		
+		$scope.user={"email":email};
 		$http.post(urlBase + '/auth/logout/',$scope.user)
 	 	.success(function(data) {
 	 		//$scope.blog = {}; 
