@@ -39,6 +39,9 @@ pageEncoding="ISO-8859-1"%>
 		
 		<div class="container">
 			<div id="content" ng-init="init(<c:out value="${id}"/>)">			
+		     <div class="alert alert-danger fade in" ng-show="commonDetailsError">
+  				<strong> {{ commonDetails }} </strong>
+			</div>
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
 		        <li><a href="#details" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Details</a></li>
 		        <li><a href="#ViewBlogs" data-toggle="tab" ng-click="getOneUsersAllBlogs(<c:out value="${id}"/>)">View Blogs</a></li>
@@ -48,7 +51,7 @@ pageEncoding="ISO-8859-1"%>
 						<h4> Welcome  {{ user.name }} ! &nbsp; &nbsp;<a  ng-click='logout()'><i class="fa fa-sign-out fa-lg" aria-hidden="true" ></i></a></h4>      
 					</div>
 				</form>
-		    </ul>
+		    </ul>		   
 		    <div id="my-tab-content" class="tab-content">        
 		        <div class="tab-pane" id="details">
 		            <h2>Profile Details</h2><br><br>
@@ -143,7 +146,7 @@ pageEncoding="ISO-8859-1"%>
 							  <label><input type="checkbox" ng-model="blog.draft" >Draft</label>
 						</div>
 						<button type="submit"  class="btn btn-primary"> Create </button>
-					</form>
+					</form>				
 				</div>
 			</div> <!-- container -->
 			</div>

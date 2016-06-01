@@ -1,16 +1,24 @@
 blogspot.controller('blogController',function($scope,$http){
 	
-	var urlBase=window.location.origin;
-		
+	var urlBase=window.location.origin;	
 	$http.defaults.headers.post["Content-Type"] = "application/json";
+	$scope.commonDetailsError=false;
+	$scope.commonDetailsErrorMsg="";
+	
+	$scope.blogDetailsError=false;
+	$scope.blogDetailsErrorMsg="";
+	
+	
 	
 	//get all the blogs from the database 
 	$http.get(urlBase+'/home')
 	.success(function(data){
 		 $scope.blog = data;
+		 $scope.blogDetailsError=false;
 	})
 	.error(function(data, status) {
-		console.error('line 12 b :', status, data);
+		$scope.blogDetailsError=true;
+		$scope.blogDetailsErrorMsg=" Error occured while fetching blogs !!! ";
 	});
 	
 	
@@ -18,10 +26,12 @@ blogspot.controller('blogController',function($scope,$http){
 	$scope.fetchOneBlog = function (id) {
 		$http.get(urlBase+'/blog/'+id)
 		.success(function(data){
+			$scope.blogDetailsError=false;
 			$scope.blogs = data;
 		})
 		.error(function(data, status) {
-			console.error('line 21 b :', status, data);
+			$scope.blogDetailsError=false;
+			$scope.blogDetailsErrorMsg=" Error occured while fetching one blog !!! ";
 		});
 	};
 	
@@ -30,18 +40,19 @@ blogspot.controller('blogController',function($scope,$http){
 	$scope.getOneUser = function (userId) {
 		$http.get(urlBase+'/user/'+userId)
 		.success(function(data){
+			$scope.blogDetailsError=false;
 			 $scope.user = data;
 		})
 		.error(function(data, status) {
-			console.error(' line 36 error', status, data);
+			$scope.blogDetailsError=true;
+			$scope.blogDetailsErrorMsg=" Error occured while fecthing one user details  !!! ";
 		});
 	};
 	
 	
 	//user logout function
 	$scope.logout = function(email) {
-		
-		console.log(email);
+				
 		$scope.user={"email":email};
 		$http.post(urlBase + '/auth/logout/',$scope.user)
 	 	.success(function(data) {
@@ -50,12 +61,13 @@ blogspot.controller('blogController',function($scope,$http){
 	 		document.cookie="id=;expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";
 	 		document.cookie = "name=; expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";
 	        document.cookie = "email=;expires=Thu, 18 Dec 2013 12:00:00 GMT; path=/";
-	 		
+	        $scope.commonDetailsError=false;
 	 		window.location="/";
 	 		
 	 	})
 	 	.error(function(data, status) {
-			console.error(' line 115 error', status, data);
+	 		$scope.commonDetailsError=true;
+	 		$scope.commonDetailsErrorMsg=" Error occured while logout !!!";
 		});
 	};
 	
@@ -66,9 +78,11 @@ blogspot.controller('blogController',function($scope,$http){
 	 	.success(function(data) {	 		
 	 		$scope.blogs = data; 
 	 		$scope.review={};
+	 		$scope.blogDetailsError=false;
 	 	})
 	 	.error(function(data, status) {
-			console.error(' line 155 error', status, data);
+	 		$scope.blogDetailsError=true;
+	 		$scope.blogDetailsErrorMsg=" Error occured  !!!";
 		});
 	};
 
@@ -76,10 +90,12 @@ blogspot.controller('blogController',function($scope,$http){
 	$scope.likeBlog = function(id,blogId) {		
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/like')
 	 	     .success(function(data) {
-	 	    	 $scope.blogs = data; 	 	    	 
+	 	    	 $scope.blogs = data;
+	 	    	$scope.blogDetailsError=false;
 	 	     })
 	 	    .error(function(data, status) {
-				console.error(' line 165 error', status, data);
+	 	    	$scope.blogDetailsError=true;
+	 	    	$scope.blogDetailsErrorMsg=" Error occured !!!";
 			});
 	};
 	
@@ -88,13 +104,13 @@ blogspot.controller('blogController',function($scope,$http){
 		$http.delete(urlBase + '/user/'+id+'/blogpost/'+blogId+'/dislike')
 	 	.success(function(data) {
 	 		$scope.blogs = data; 
+	 		$scope.blogDetailsError=false;
 	 	})
 	 	.error(function(data, status) {
-			console.error(' line 176 error', status, data);
+	 		$scope.blogDetailsError=true;
+	 		$scope.blogDetailsErrorMsg=" Error occured !!!";
 		});
 	};
-	
-	
 	
 	//for fetching blog when asked for single page article
 	$scope.init = function(id){

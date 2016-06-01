@@ -50,7 +50,9 @@ pageEncoding="ISO-8859-1"%>
 			<c:set var="id" scope="session" value="${blogs.blogId}"/>
 			<c:set var="userId" value="${blogs.userId}"/>
 		</c:if>
-		
+		<div class="alert alert-danger fade in" ng-show="commonDetailsError" ng-show="blogDetailsError">
+			<strong>{{ commonDetailsErrorMsg }} {{blogDetailsError}} </strong>
+		</div>		
 		<div class="container"  ng-init="init(<c:out value="${id}"/>)">
 			<%	
 			  Cookie[] cookies = request.getCookies();

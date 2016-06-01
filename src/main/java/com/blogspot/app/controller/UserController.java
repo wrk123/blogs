@@ -23,9 +23,6 @@ import com.blogspot.app.repository.ReviewRepository;
 import com.blogspot.app.repository.SessionTokenRepository;
 import com.blogspot.app.repository.UserRepository;
 
-
-
-
 @RestController
 public class UserController {
 
@@ -47,20 +44,20 @@ public class UserController {
 	
 	//Method for creating users 
 	@RequestMapping(value="/user",method=RequestMethod.POST)
-	public @ResponseBody ResponseEntity<User> createUser(@RequestBody User userDetails) throws Exception{
+	public @ResponseBody ResponseEntity<User> createUser(@RequestBody User userDetails) throws Exception{		
 		Optional<User> users=null;
-		User user =null;
+		User user=null;
 		SessionToken userSession=null;		
 		
-		//checking for same email present in the database
-		users=userDAO.findByEmail(userDetails.getEmail());
-		if(users!=null){
-			return new ResponseEntity<User>(HttpStatus.CONFLICT);
-		}
-		
 		//for checking update user 
-		user=userDAO.findOne(userDetails.getId());
+		user=userDAO.findOne(userDetails.getId());		
 		if (user==null){
+			
+			//checking for unique email 
+			users=userDAO.findByEmail(userDetails.getEmail());
+			if(users.isPresent()){
+				return  new ResponseEntity<User>(user, HttpStatus.CONFLICT);
+			}
 			//insert new user 
 			try{
 				user=new User(userDetails.getEmail().toLowerCase(),userDetails.getName(),userDetails.getContact(), new Date(),new Date(),userDetails.getPassword(),0);				

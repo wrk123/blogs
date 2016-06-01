@@ -52,14 +52,15 @@ pageEncoding="ISO-8859-1"%>
 						</div>
 					</form>				    
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="/">Home</a></li>
-						<li><a href="#">Profile</a></li>
-						<li><a href="#">View blogs</a></li>
+						<li class="active"><a href="/">Home</a></li>						
 					</ul>
 				</nav>
 			</div>
 		</header>		
-		<!--  -->
+		
+		<div class="alert alert-danger fade in" ng-show="commonDetailsError" ng-show="blogDetailsError">
+			<strong>{{ commonDetailsErrorMsg }} {{blogDetailsError}} </strong>
+		</div>			
 		<div class="container">
 		<%	if(cookies.length>1){
 			    id=cookies[1].getValue();

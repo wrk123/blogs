@@ -26,8 +26,7 @@ pageEncoding="ISO-8859-1"%>
 		<h3> Please select the below options to continue</h3><br/>
 		<div class="container">
 		  <div class="row">
-		  	<div class="col">
-		  		<!-- <a href="/jsp/login.jsp"><button class="btn btn-primary">Login</button>&</a>nbsp;&nbsp;&nbsp;&nbsp; -->
+		  	<div class="col">		  		
 		  		<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Login</button>&nbsp;&nbsp;&nbsp;&nbsp;
 	 	  		<a href="/blogHome"><button type="button" class="btn btn-info">View all blogs</button></a>&nbsp;&nbsp;&nbsp;&nbsp;
 		  		<button ng-click='toggle=!toggle' class="btn btn-panel"><i class="panel-title-icon fa fa-plus"></i> Add New User </button>
@@ -38,6 +37,9 @@ pageEncoding="ISO-8859-1"%>
 	
 	<!-- For creating a new user -->
 	 <div class="container"  ng-hide="toggle">
+		<div class="alert alert-danger fade in" ng-show="commonDetailsError">
+			<strong>{{ commonDetailsErrorMsg }}</strong>
+		</div>
 		 <div id="add-task-panel" class="fadein fadeout addpanel panel">
 			<h3>Please enter the user details below </h3>
 			<table class="table table-bordered table-striped container">
@@ -63,8 +65,7 @@ pageEncoding="ISO-8859-1"%>
 		</div>
 	</div> 
 	
-	
-	 <div class="modal fade" id="myModal" role="dialog">
+	<div class="modal fade" id="myModal" role="dialog">
      	<div class="modal-dialog">
 	      <div class="modal-content">
 	        <div class="modal-header">
@@ -77,6 +78,9 @@ pageEncoding="ISO-8859-1"%>
 		        	<input type="email" class="form-control"  ng-model="user.email" placeholder="Email"/><br/>
 		        	<label class="col-sm-2 control-label" >Password</label>
 		        	<input type="password" class="form-control"  ng-model="user.password" placeholder="Password"/><br/>
+		        	<div class="alert alert-danger fade in" ng-show="loginError">
+		        		<strong>{{ msg }}</strong>
+		        	</div>
 		        	<button type="submit"  class="btn btn-primary pull-right">Log in</button> &nbsp;&nbsp;&nbsp;&nbsp; 
 		            <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button><br/>		            
 		        </form>

@@ -87,7 +87,6 @@ public class LoginController {
 		try {
 			authTokenDAO.save(userSession);
 		} catch (Exception e) {
-			System.out.println("Exception occured while logging in ::::");
 			e.printStackTrace();
 		}
 
