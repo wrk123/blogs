@@ -227,7 +227,7 @@ public class BlogController {
 				}
 		}
 		else 
-			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
+			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);	
 			
 		blogRepo.save(blogs);
 		

@@ -58,10 +58,10 @@ pageEncoding="ISO-8859-1"%>
 			</div>
 		</header>		
 		
-		<div class="alert alert-danger fade in" ng-show="commonDetailsError" ng-show="blogDetailsError">
-			<strong>{{ commonDetailsErrorMsg }} {{blogDetailsError}} </strong>
-		</div>			
 		<div class="container">
+			<div class="alert alert-danger fade in" ng-show="blogDetailsError">
+				<strong> {{blogDetailsErrorMsg}} </strong>
+			</div>	
 		<%	if(cookies.length>1){
 			    id=cookies[1].getValue();
 			 	name=cookies[2].getValue();
