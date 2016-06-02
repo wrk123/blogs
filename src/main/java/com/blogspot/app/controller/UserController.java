@@ -72,7 +72,7 @@ public class UserController {
 				}
 		}else{  //for updating an existing user
 				
-				if(!checkUserAuth(user))
+				if(checkUserAuth(user))
 					return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
 				
 				userDetails.setLastModifiedTime(new Date());
@@ -90,9 +90,10 @@ public class UserController {
 			if(user==null){
 				return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 			}
-			if(!checkUserAuth(user))
-				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);				
 		
+			/*if(checkUserAuth(user))
+				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);				
+		*/
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 		
@@ -106,7 +107,7 @@ public class UserController {
 		if(user==null){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findByUserIdOrderByBlogLikesDesc(user.getId());
@@ -128,7 +129,7 @@ public class UserController {
 		if(user==null){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findByUserIdOrderByBlogDislikesDesc(user.getId());
@@ -150,7 +151,7 @@ public class UserController {
 		if (user == null) {
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if (!checkUserAuth(user))
+		if (checkUserAuth(user))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 
 		blogs = blogRepo.findByUserId(user.getId());
@@ -171,7 +172,7 @@ public class UserController {
 		if(user==null){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findByUserIdOrderByCreationTimeMonth(user.getId());
@@ -193,7 +194,7 @@ public class UserController {
 		if(user==null){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findByUserIdOrderByCreationTime(user.getId());
@@ -209,10 +210,10 @@ public class UserController {
 	boolean checkUserAuth(User user){
 		SessionToken userSession=null;		
 		userSession=authTokenDAO.findByUserId(user.getId());
-				if(userSession.getAuthToken()!=null)
-					return true;
-				else 
+				if(userSession.getAuthToken()==null)
 					return false;
+				else 
+					return true;
 	}
 	
 }

@@ -61,7 +61,7 @@ public class BlogController {
 		Date publishDate=null;
 		user=userDAO.findById(blogDetails.getUserId());	
 		//check for authorization
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		try{
 			//in case of new blog 
@@ -104,7 +104,7 @@ public class BlogController {
 		Blog blogs=null;
 		User user=null;
 		user=userDAO.findById(userId);
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 	
 		blogs=blogRepo.findOne(blogId);
@@ -113,13 +113,13 @@ public class BlogController {
 		}
 		
 		Review comment=null;
-		if(user.getCredit()<50)
+		if(user.getCredit()<100)
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 			//for updating credit of the user who created the  blog
 		user=userDAO.findById(blogs.getUserId());
 		
-		int score=user.getCredit()+15;				// add the credit 
+		int score=user.getCredit()+25;				// add the credit 
 		user.setCredit(score);
 		userDAO.save(user);
 															//save the comments
@@ -135,7 +135,7 @@ public class BlogController {
 		Blog blogs=null;
 		User user=null;
 		user=userDAO.findById(userId);
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findOne(blogId);
@@ -143,12 +143,12 @@ public class BlogController {
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 					
-		if(user.getCredit()<50)
+		if(user.getCredit()<100)
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 		//for updating credit of the user who created the  blog
 		user=userDAO.findById(blogs.getUserId());
-		int score=user.getCredit()+5;				// add the credit 
+		int score=user.getCredit()+10;				// add the credit 
 		user.setCredit(score);
 		userDAO.save(user);
 		
@@ -165,7 +165,7 @@ public class BlogController {
 		Blog blogs=null;
 		User user=null;
 		user=userDAO.findById(userId);
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findOne(blogId);
@@ -173,13 +173,13 @@ public class BlogController {
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 			
-		if(user.getCredit()<50)
+		if(user.getCredit()<100)
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 		
 		//for updating credit of the user who created the  blog
 		user=userDAO.findById(blogs.getUserId());
-		int score=user.getCredit()-1;				// subtract the credit 
+		int score=user.getCredit()-5;				// subtract the credit 
 		user.setCredit(score);
 		userDAO.save(user);
 		
@@ -206,7 +206,7 @@ public class BlogController {
 		Blog blogs = null;
 		user=userDAO.findById(userId);
 		
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findOne(userBlogId);
@@ -241,7 +241,7 @@ public class BlogController {
 		List<Blog> blogs=null;
 		user=userDAO.findById(userId);
 		
-		if(!checkUserAuth(user))
+		if(checkUserAuth(user))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findAllByUserIdOrderByCreationTimeDesc(user.getId());

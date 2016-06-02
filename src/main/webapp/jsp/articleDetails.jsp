@@ -18,7 +18,6 @@ pageEncoding="ISO-8859-1"%>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
 		<script type="text/javascript" src="../static/js/app.js"></script>
 		<script type="text/javascript" src="../static/js/controller/blogspotController.js"></script>
-		<script type="text/javascript" src="../static/js/controller/userController.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js"></script>
@@ -142,7 +141,7 @@ pageEncoding="ISO-8859-1"%>
 					<ul id="comments" class="comments">
 						<li class="comment" ng-repeat="review in blogs.review">
 							<div class="clearfix">
-								<h5 class="pull-left"> ID: {{ review.userId }} </h5>
+								<h5 class="pull-left" ng-init="getOneUser(review.userId)"><b>{{ user.name }}</b></h5>
 								<p class="pull-right"><em>Commented on : &nbsp;{{ review.creationTime | date:'medium' }}</em></p>
 							</div>
 							<p>

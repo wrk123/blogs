@@ -34,12 +34,16 @@ blogspot.controller('blogController',function($scope,$http){
 
 	//get one user details
 	$scope.getOneUser = function (userId) {
+			console.log(userId);
 		$http.get(urlBase+'/user/'+userId)
 		.success(function(data){
-			$scope.blogDetailsError=false;
-			 $scope.user = data;
+			$scope.blogDetailsError=false;			
+				console.log(" Returning the success data !!!"+data);
+			$scope.user={"name":""};
+			$scope.user = data;
 		})
 		.error(function(data, status) {
+				console.log("Error occured !!!");
 			$scope.blogDetailsError=true;
 		});
 	};
@@ -112,6 +116,6 @@ blogspot.controller('blogController',function($scope,$http){
 	//for fetching blog when asked for single page article
 	$scope.init = function(id){
 		$scope.fetchOneBlog(id);	
-	}
+	};
 	
 });
