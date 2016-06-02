@@ -245,7 +245,7 @@ public class BlogController {
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
 		blogs=blogRepo.findAllByUserIdOrderByCreationTimeDesc(user.getId());
-		if(blogs == null)
+		if(blogs == null && blogs.isEmpty())
 			return new ResponseEntity<List<Blog>>(HttpStatus.NO_CONTENT);
 		
 		return new  ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
