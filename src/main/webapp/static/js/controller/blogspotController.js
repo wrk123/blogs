@@ -4,7 +4,7 @@ blogspot.controller('blogController',function($scope,$http){
 	$http.defaults.headers.post["Content-Type"] = "application/json";
 	
 	$scope.blogDetailsError=false;
-	$scope.blogDetailsErrorMsg="";
+	$scope.blogDetailsErrorMsg=" Error occured !!!";
 	
 	
 	
@@ -16,7 +16,6 @@ blogspot.controller('blogController',function($scope,$http){
 	})
 	.error(function(data, status) {
 		$scope.blogDetailsError=true;
-		$scope.blogDetailsErrorMsg=" Error occured while fetching blogs !!! ";
 	});
 	
 	
@@ -29,7 +28,6 @@ blogspot.controller('blogController',function($scope,$http){
 		})
 		.error(function(data, status) {
 			$scope.blogDetailsError=false;
-			$scope.blogDetailsErrorMsg=" Error occured while fetching one blog !!! ";
 		});
 	};
 	
@@ -43,7 +41,6 @@ blogspot.controller('blogController',function($scope,$http){
 		})
 		.error(function(data, status) {
 			$scope.blogDetailsError=true;
-			$scope.blogDetailsErrorMsg=" Error occured while fecthing one user details  !!! ";
 		});
 	};
 	
@@ -65,7 +62,6 @@ blogspot.controller('blogController',function($scope,$http){
 	 	})
 	 	.error(function(data, status) {
 	 		$scope.blogDetailsError=true;
-	 		$scope.blogDetailsErrorMsg=" Error occured while logout !!!";
 		});
 	};
 	
@@ -81,9 +77,7 @@ blogspot.controller('blogController',function($scope,$http){
 	 	.error(function(data, status) {
 	 		$scope.blogDetailsError=true;
 	 		if(status==412)
-	 			{  $scope.blogDetailsErrorMsg=" You don't have sufficient credit to proceed !!!";  }
- 	    	else
- 	    		$scope.blogDetailsErrorMsg=" Error occured  !!!";
+	 			{  $scope.blogDetailsErrorMsg=" You don't have sufficient credit to proceed !!!";  } 	    
 		});
 	};
 
@@ -96,10 +90,8 @@ blogspot.controller('blogController',function($scope,$http){
 	 	     })
 	 	    .error(function(data, status) {
 	 	    	$scope.blogDetailsError=true;
-	 	    	
 	 	    	if(status==412)
 	 	    	{  $scope.blogDetailsErrorMsg=" You don't have sufficient credit to proceed !!!";  }
-	 	    	else $scope.blogDetailsErrorMsg=" Error occured !!!";
 			});
 	};
 	
@@ -114,8 +106,6 @@ blogspot.controller('blogController',function($scope,$http){
 	 		$scope.blogDetailsError=true;
 	 		if(status==412)
 	 			{  $scope.blogDetailsErrorMsg=" You don't have sufficient credit to proceed !!!";  }
- 	    	else
-	 		$scope.blogDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 	
