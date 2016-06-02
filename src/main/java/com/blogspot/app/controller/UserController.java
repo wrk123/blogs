@@ -50,7 +50,8 @@ public class UserController {
 		SessionToken userSession=null;		
 		
 		//for checking update user 
-		user=userDAO.findOne(userDetails.getId());		
+		user=userDAO.findOne(userDetails.getId());
+		
 		if (user==null){
 			
 			//checking for unique email 
@@ -86,7 +87,7 @@ public class UserController {
 	@RequestMapping(value="/user/{userId}",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<User> getOneUserDetails(@PathVariable Long userId){
 		User user=null;
-			user=userDAO.findOne(userId);
+		user=userDAO.findOne(userId);
 			if(user==null){
 				return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 			}
