@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.Repository;
+<<<<<< HEAD
 import com.blogspot.app.model.Review;
 
+import com.blogspot.app.model.Review;
 
 public interface ReviewRepository extends CrudRepository<Review, Long>,Repository<Review, Long>{
 	
