@@ -3,6 +3,8 @@ package com.blogspot.app.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,11 +26,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 
 @RestController
+@PropertySource("classpath:ResourceBundle.properties")
 public class BlogController {
 
+	@Autowired
+	Environment env;
+	
 	@Autowired
 	UserRepository userDAO;
 	
@@ -41,7 +49,7 @@ public class BlogController {
 	@Autowired
 	ReviewRepository reviewRepo;
 	
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+//	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	//for fetching all blogs on like of a comment
 	@RequestMapping(value="/home",method=RequestMethod.GET)
@@ -55,13 +63,13 @@ public class BlogController {
 	//for posting a new blog
 	@RequestMapping(value="/blogpost",method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Blog> createBlog(@RequestBody Blog blogDetails){
-		User user=null;
+		Optional<User> user=null;
 		
 		Blog blogs=null;
 		Date publishDate=null;
-		user=userDAO.findById(blogDetails.getUserId());	
+		user=userDAO.findOneById(blogDetails.getUserId());	
 		//check for authorization
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		try{
 			//in case of new blog 
@@ -72,7 +80,7 @@ public class BlogController {
 					 blogDetails.setIsActive(false);
 					
 				    blogs=new Blog(blogDetails.getBlogTitle(),blogDetails.getBlogContent(),blogDetails.getUserId(),blogDetails.getDraft(),new Date(),publishDate,blogDetails.getBlogLikes(),blogDetails.getBlogDislikes(),blogDetails.getIsActive());
-				    blogs.setUser(user);
+				    blogs.setUser(user.get());
 				    blogRepo.save(blogs);
 				}else
 				{	//for existing blog
@@ -87,7 +95,7 @@ public class BlogController {
 					
 									
 					blogDetails.setPublishTime(publishDate);
-					blogDetails.setUser(user);
+					blogDetails.setUser(user.get());
 					blogRepo.save(blogDetails);
 				}
 			
@@ -101,150 +109,144 @@ public class BlogController {
 	
 	@RequestMapping(value="/user/{userId}/blogpost/{blogId}/comment",method=RequestMethod.POST)
 	public @ResponseBody ResponseEntity<Blog> commentBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId,@RequestBody Review review)	throws Exception{
-		Blog blogs=null;
-		User user=null;
-		user=userDAO.findById(userId);
-		if(checkUserAuth(user))
+		Optional<Blog> blogs=null;
+		Optional<User> user=null;
+		user=userDAO.findOneById(userId);
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 	
-		blogs=blogRepo.findOne(blogId);
-		if(blogs==null){
+		blogs=blogRepo.findOneByBlogId(blogId);
+		if(!blogs.isPresent()){
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 		
 		Review comment=null;
-		if(user.getCredit()<100)
+		if(user.get().getCredit()< Integer.parseInt(env.getProperty("credit.min")))
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 			//for updating credit of the user who created the  blog
-		user=userDAO.findById(blogs.getUserId());
+		user=userDAO.findOneById(blogs.get().getUserId());
 		
-		int score=user.getCredit()+25;				// add the credit 
-		user.setCredit(score);
-		userDAO.save(user);
+		int score=user.get().getCredit()+Integer.parseInt(env.getProperty("credit.comment"));				// add the credit 
+		user.get().setCredit(score);
+		userDAO.save(user.get());
 															//save the comments
 		comment=new Review(review.getComments(),new Date(),userId, blogId);
 		reviewRepo.save(comment); 
 	
-		return new ResponseEntity<Blog>(blogs,HttpStatus.OK);
+		return new ResponseEntity<Blog>(blogs.get(),HttpStatus.OK);
 	}
 	
 	//to like a blog
 	@RequestMapping(value="/user/{userId}/blogpost/{blogId}/like",method=RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Blog> likeBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId)	throws Exception{
-		Blog blogs=null;
-		User user=null;
-		user=userDAO.findById(userId);
-		if(checkUserAuth(user))
+		Optional<Blog> blogs=null;
+		Optional<User> user=null;
+		
+		user=userDAO.findOneById(userId);
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findOne(blogId);
-		if(blogs==null){
+		blogs=blogRepo.findOneByBlogId(blogId);
+		if(!blogs.isPresent()){
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 					
-		if(user.getCredit()<100)
+		if(user.get().getCredit()< Integer.parseInt(env.getProperty("credit.min")))
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 		//for updating credit of the user who created the  blog
-		user=userDAO.findById(blogs.getUserId());
-		int score=user.getCredit()+10;				// add the credit 
-		user.setCredit(score);
-		userDAO.save(user);
+		user=userDAO.findOneById(blogs.get().getUserId());
+		int score=user.get().getCredit()+Integer.parseInt(env.getProperty("credit.like")) ;				// add the credit 
+		user.get().setCredit(score);
+		userDAO.save(user.get());
 		
-		int  likes=blogs.getBlogLikes()+1;
-		blogs.setBlogLikes(likes);
-		blogRepo.save(blogs);
+		int  likes=blogs.get().getBlogLikes()+1;
+		blogs.get().setBlogLikes(likes);
+		blogRepo.save(blogs.get());
 		
-		return new ResponseEntity<Blog>(blogs,HttpStatus.OK);
+		return new ResponseEntity<Blog>(blogs.get(),HttpStatus.OK);
 	}
 	
 	//to dislike a blog
 	@RequestMapping(value="/user/{userId}/blogpost/{blogId}/dislike",method=RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Blog> dislikeBlog(@PathVariable(value="userId") Long userId,@PathVariable(value="blogId") Long blogId){
-		Blog blogs=null;
-		User user=null;
-		user=userDAO.findById(userId);
-		if(checkUserAuth(user))
+		Optional<Blog> blogs=null;
+		Optional<User> user=null;
+		
+		user=userDAO.findOneById(userId);
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findOne(blogId);
+		blogs=blogRepo.findOneByBlogId(blogId);
 		if(blogs==null){
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		}
 			
-		if(user.getCredit()<100)
+		if(user.get().getCredit()<Integer.parseInt(env.getProperty("credit.min")))
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);
 		
 		
 		//for updating credit of the user who created the  blog
-		user=userDAO.findById(blogs.getUserId());
-		int score=user.getCredit()-5;				// subtract the credit 
-		user.setCredit(score);
-		userDAO.save(user);
+		user=userDAO.findOneById(blogs.get().getUserId());
+		int score=user.get().getCredit()-Integer.parseInt(env.getProperty("credit.dislike"));				// subtract the credit 
+		user.get().setCredit(score);
+		userDAO.save(user.get());
 		
-		int  dislikes=blogs.getBlogDislikes()+1;  //increase the number of likes 
-		blogs.setBlogDislikes(dislikes);
-		blogRepo.save(blogs);
+		int  dislikes=blogs.get().getBlogDislikes()+1;  //increase the number of likes 
+		blogs.get().setBlogDislikes(dislikes);
+		blogRepo.save(blogs.get());
 		
-		return new ResponseEntity<Blog>(blogs,HttpStatus.OK);
+		return new ResponseEntity<Blog>(blogs.get(),HttpStatus.OK);
 	}
 	
-	//checking user logged in 
-	boolean checkUserAuth(User user){
-		SessionToken userSession=null;
-			userSession=authTokenDAO.findByUserId(user.getId());
-			if(userSession.getAuthToken()!=null)
-				return true;
-			else return false;
-	}
 	
 	//for making post inActive by the user
 	@RequestMapping(value="/user/{userId}/blogpost/{userBlogId}/isActive",method=RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<Blog> markBlogInactive(@PathVariable Long userId, @PathVariable Long userBlogId){
-		User user=null;
-		Blog blogs = null;
-		user=userDAO.findById(userId);
+		Optional<Blog> blogs=null;
+		Optional<User> user=null;
+		user=userDAO.findOneById(userId);
 		
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<Blog>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findOne(userBlogId);
-		if(blogs==null)
+		blogs=blogRepo.findOneByBlogId(userBlogId);
+		if(!blogs.isPresent())
 			return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
 		
 		
-		if(blogs.getUserId()==user.getId())
-		{	if(blogs.getIsActive())
-				blogs.setIsActive(false);
+		if(blogs.get().getUserId()==user.get().getId())
+		{	if(blogs.get().getIsActive())
+				blogs.get().setIsActive(false);
 			else
-				{	if(blogs.getPublishTime()==null)
-					{	blogs.setPublishTime(new Date());		// in case of making a blog active, one need to publish it 
-						blogs.setDraft(false);
-						blogs.setIsActive(true); }
+				{	if(blogs.get().getPublishTime()==null)
+					{	blogs.get().setPublishTime(new Date());		// in case of making a blog active, one need to publish it 
+						blogs.get().setDraft(false);
+						blogs.get().setIsActive(true); }
 					else
-						blogs.setIsActive(true); 
+						blogs.get().setIsActive(true); 
 				}
 		}
 		else 
 			return new ResponseEntity<Blog>(HttpStatus.PRECONDITION_FAILED);	
 			
-		blogRepo.save(blogs);
+		blogRepo.save(blogs.get());
 		
-		return new  ResponseEntity<Blog>(blogs,HttpStatus.OK); 
+		return new  ResponseEntity<Blog>(blogs.get(),HttpStatus.OK); 
 	}
 	
 	//fetch all the blogs of a specific user
 	@RequestMapping(value="/user/{userId}/blogpost",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getOneUsersAllBlogs(@PathVariable Long userId){
-		User user=null;
+		Optional<User> user=null;
 		List<Blog> blogs=null;
-		user=userDAO.findById(userId);
+		user=userDAO.findOneById(userId);
 		
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findAllByUserIdOrderByCreationTimeDesc(user.getId());
+		blogs=blogRepo.findAllByUserIdOrderByCreationTimeDesc(user.get().getId());
 		if(blogs == null && blogs.isEmpty())
 			return new ResponseEntity<List<Blog>>(HttpStatus.NO_CONTENT);
 		
@@ -254,9 +256,20 @@ public class BlogController {
 	//fetch one blog details
 	@RequestMapping(value="/blog/{id}",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Blog> fetchOneBlog(@PathVariable Long id){
-		Blog blog=null;
-		blog=blogRepo.findOne(id);
+		Optional<Blog> blog=null;
+		blog=blogRepo.findOneByBlogId(id);
 		
-		return new  ResponseEntity<Blog>(blog,HttpStatus.OK);
+		return new  ResponseEntity<Blog>(blog.get(),HttpStatus.OK);
 	}
+	
+	//checking whether user has logged in or not 
+	boolean checkUserAuth(User user){
+		SessionToken userSession=null;		
+		userSession=authTokenDAO.findByUserId(user.getId());
+		if(userSession.getAuthToken()!=null)
+					return false;
+				else 
+					return true;
+	}
+		
 }

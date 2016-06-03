@@ -12,6 +12,8 @@ import com.blogspot.app.model.User;
 
 public interface BlogRepository extends CrudRepository<Blog, Long>{
 	
+	Optional<Blog> findOneByBlogId(Long id);
+	
 	List<Blog> findByUserId(Long userId);
 	
 	List<Blog> findByIsActiveOrderByCreationTimeDesc(boolean isActive);

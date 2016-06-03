@@ -40,7 +40,7 @@ pageEncoding="ISO-8859-1"%>
 		<div class="container">
 			<div id="content" ng-init="init(<c:out value="${id}"/>)">			
 		     <div class="alert alert-danger fade in" ng-show="commonDetailsError">
-  				<strong> {{ commonDetails }} </strong>
+  				<strong> {{ commonDetailsErrorMsg }} </strong>
 			</div>
 		    <ul id="tabs" class="nav nav-pills" data-tabs="tabs">
 		        <li><a href="#details" data-toggle="tab" ng-click="getOneUser(<c:out value="${id}"/>)">Details</a></li>

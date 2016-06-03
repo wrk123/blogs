@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.blogspot.app.model.Blog;
 import com.blogspot.app.model.User;
 import com.blogspot.app.model.SessionToken;
@@ -50,9 +51,8 @@ public class UserController {
 		SessionToken userSession=null;		
 		
 		//for checking update user 
-		user=userDAO.findOne(userDetails.getId());
-		
-		if (user==null){
+		users=userDAO.findOneById(userDetails.getId());
+		if (!users.isPresent()){
 			
 			//checking for unique email 
 			users=userDAO.findByEmail(userDetails.getEmail());
@@ -86,36 +86,37 @@ public class UserController {
 	//for fetching user details of a single user 
 	@RequestMapping(value="/user/{userId}",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<User> getOneUserDetails(@PathVariable Long userId){
-		User user=null;
-		user=userDAO.findOne(userId);
-			if(user==null){
+		Optional<User> user=null;
+		user=userDAO.findOneById(userId);
+		if(!user.isPresent()){
 				return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 			}
 		
 			/*if(checkUserAuth(user))
 				return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);				
 		*/
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+		
+		return new ResponseEntity<User>(user.get(), HttpStatus.OK);
 	}
 		
 	//user filter for likes 
 	@RequestMapping(value="/user/{userId}/blogpost/like",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getBlogLikes(@PathVariable Long userId){
-	User user=null;
-
-	List<Blog> blogs=null;	
-	user=userDAO.findOne(userId);
-		if(user==null){
+		Optional<User> user=null;
+		List<Blog> blogs=null;
+	
+		user=userDAO.findOneById(userId);
+		if(!user.isPresent()){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findByUserIdOrderByBlogLikesDesc(user.getId());
+		blogs=blogRepo.findByUserIdOrderByBlogLikesDesc(user.get().getId());
 		
 		for(Blog blog: blogs)												//get the comments for each blog
 		{	blog.setReview(reviewRepo.findByBlogId(blog.getBlogId()));
-			blog.setUser(user);
+			blog.setUser(user.get());
 		}
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
@@ -123,20 +124,20 @@ public class UserController {
 	//user filter for dislikes 
 	@RequestMapping(value="/user/{userId}/blogpost/dislike",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getBlogDislikes(@PathVariable Long userId) {
-	User user=null;
+	Optional<User> user=null;
 	
 	List<Blog> blogs=null;	
-	user=userDAO.findOne(userId);
-		if(user==null){
+	user=userDAO.findOneById(userId);
+		if(!user.isPresent()){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findByUserIdOrderByBlogDislikesDesc(user.getId());
+		blogs=blogRepo.findByUserIdOrderByBlogDislikesDesc(user.get().getId());
 		for(Blog blog: blogs)												//get the comments for each blog
 		{	blog.setReview(reviewRepo.findByBlogId(blog.getBlogId()));
-			blog.setUser(user);
+			blog.setUser(user.get());
 		}	
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
@@ -144,18 +145,17 @@ public class UserController {
 	//user filter for comments  
 	@RequestMapping(value="/user/{userId}/blogpost/comment",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getBlogComments(@PathVariable Long userId){
-		User user = null;
-
+		Optional<User> user = null;
 		List<Blog> blogs = null;
         
-		user = userDAO.findOne(userId);
-		if (user == null) {
+		user=userDAO.findOneById(userId);
+		if (!user.isPresent()) {
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if (checkUserAuth(user))
+		if (checkUserAuth(user.get()))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 
-		blogs = blogRepo.findByUserId(user.getId());
+		blogs = blogRepo.findByUserId(user.get().getId());
 			    
 		for (Blog blog : blogs) // get the comments for each blog
 			blog.setReview(reviewRepo.findByBlogIdOrderByCreationTimeDesc(blog.getBlogId()));
@@ -166,21 +166,21 @@ public class UserController {
 	//user filter for month based blogposts
 	@RequestMapping(value="/user/{userId}/blogpost/month",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getMonthlyBlog(@PathVariable Long userId){
-	User user=null;
-	
-	List<Blog> blogs=null;	
-	user=userDAO.findOne(userId);
-		if(user==null){
+		Optional<User> user=null;
+		List<Blog> blogs=null;	
+		user=userDAO.findOneById(userId);
+		
+		if(!user.isPresent()){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findByUserIdOrderByCreationTimeMonth(user.getId());
+		blogs=blogRepo.findByUserIdOrderByCreationTimeMonth(user.get().getId());
 		
 		for(Blog blog: blogs)												//get the comments for each blog
 		{		blog.setReview(reviewRepo.findByBlogIdOrderByCreationTimeDesc(blog.getBlogId()));
-				blog.setUser(user);
+				blog.setUser(user.get());
 		}		
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
@@ -188,21 +188,20 @@ public class UserController {
 	//user filter for year based blogposts
 	@RequestMapping(value="/user/{userId}/blogpost/year",method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<List<Blog>> getYearlyBlog(@PathVariable Long userId){
-	User user=null;
-	
-	List<Blog> blogs=null;	
-	user=userDAO.findOne(userId);
-		if(user==null){
+		Optional<User> user=null;
+		List<Blog> blogs=null;	
+		user=userDAO.findOneById(userId);
+		if(!user.isPresent()){
 			return new ResponseEntity<List<Blog>>(HttpStatus.NOT_FOUND);
 		}
-		if(checkUserAuth(user))
+		if(checkUserAuth(user.get()))
 			return new ResponseEntity<List<Blog>>(HttpStatus.UNAUTHORIZED);
 		
-		blogs=blogRepo.findByUserIdOrderByCreationTime(user.getId());
+		blogs=blogRepo.findByUserIdOrderByCreationTime(user.get().getId());
 		
 		for(Blog blog: blogs)												//get the comments for each blog
 		{	blog.setReview(reviewRepo.findByBlogIdOrderByCreationTimeDesc(blog.getBlogId()));
-			blog.setUser(user);
+			blog.setUser(user.get());
 		}
 		return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
 	}
@@ -211,10 +210,10 @@ public class UserController {
 	boolean checkUserAuth(User user){
 		SessionToken userSession=null;		
 		userSession=authTokenDAO.findByUserId(user.getId());
-				if(userSession.getAuthToken()==null)
-					return false;
-				else 
-					return true;
+			if(userSession.getAuthToken()!=null)
+				return false;
+			else 
+				return true;
 	}
 	
 }

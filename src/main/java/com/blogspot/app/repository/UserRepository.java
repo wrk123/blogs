@@ -11,6 +11,8 @@ import com.blogspot.app.model.User;
 @org.springframework.stereotype.Repository
 public interface UserRepository extends Repository<User,Long>,CrudRepository<User, Long>{
 	
+	Optional<User> findOneById(Long id);
+	
 	Optional<User> findByEmail(String email);
 	
 	User findById(Long userId);

@@ -6,7 +6,7 @@ user.controller('usersController',function($scope,$http){
 	$scope.toggle=true;
 	$http.defaults.headers.post["Content-Type"] = "application/json";
 	$scope.commonDetailsError=false;
-	$scope.commonDetailsErrorMsg=" Error occured !!!";
+	
 	
 	//get one user details
 	$scope.getOneUser = function (userId) {
@@ -17,6 +17,7 @@ user.controller('usersController',function($scope,$http){
 		})
 		.error(function(data, status) {
 			$scope.commonDetailsError=true;
+			$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 	
@@ -30,6 +31,7 @@ user.controller('usersController',function($scope,$http){
 		})
 		.error(function(data, status) {
 			$scope.commonDetailsError=true;
+			$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});;
 	};
 
@@ -42,6 +44,7 @@ user.controller('usersController',function($scope,$http){
 		})
 		.error(function(data, status) {
 			$scope.commonDetailsError=true;
+			$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 	
@@ -57,6 +60,7 @@ user.controller('usersController',function($scope,$http){
 		    .error(function(data, status) {
 		    	$scope.commonDetailsError=true;
 		    	if(status == 409){ $scope.commonDetailsErrorMsg=" User with email already exists !!! Please enter a different EMAIL ID to continue.";}
+		    	$scope.commonDetailsErrorMsg=" Error occured !!!";
 		    });
 		};
 	
@@ -69,7 +73,8 @@ user.controller('usersController',function($scope,$http){
 		 		$scope.commonDetailsError=false;
 		    })
 		    .error(function (data, status) {
-		    	$scope.commonDetailsError=true;		    	
+		    	$scope.commonDetailsError=true;
+		    	$scope.commonDetailsErrorMsg=" Error occured !!!";
 			});
 		};	
 		
@@ -82,6 +87,7 @@ user.controller('usersController',function($scope,$http){
 				$scope.commonDetailsError=false;
 			}, function errorCallback(data, status) {
 				$scope.commonDetailsError=true;
+				$scope.commonDetailsErrorMsg=" Error occured !!!";
 			});
 		};
 		
@@ -95,6 +101,7 @@ user.controller('usersController',function($scope,$http){
 		})
 		.error(function (data, status) {
 			$scope.commonDetailsError=true;
+			$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 	
@@ -122,7 +129,7 @@ user.controller('usersController',function($scope,$http){
 			$scope.loginError=true;
 			if(status == 404){	$scope.msg =" User not found !!!"; }
 	 		if(status == 401){ 	$scope.msg =" Invalid email or password. "; }
-	 		
+	 		$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 	
@@ -141,6 +148,7 @@ user.controller('usersController',function($scope,$http){
 	 	})
 	 	.error(function (data, status) {
 	 		$scope.commonDetailsError=true;
+	 		$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 		
@@ -155,6 +163,7 @@ user.controller('usersController',function($scope,$http){
 	 	}).
 	 	error(function (data, status) {
 	 		$scope.commonDetailsError=true;
+	 		$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};	
 	
@@ -173,6 +182,7 @@ user.controller('usersController',function($scope,$http){
 	 	}
 	 	, function errorCallback(data, status) {	 		
 	 		$scope.commonDetailsError=true;
+	 		$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};	
 	
@@ -191,6 +201,7 @@ user.controller('usersController',function($scope,$http){
 	 	})
 	 	.error(function (data, status) {
 	 		$scope.commonDetailsError=true;
+	 		$scope.commonDetailsErrorMsg=" Error occured !!!";
 		});
 	};
 	
