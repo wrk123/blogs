@@ -106,7 +106,4 @@ public class Review {
 		return "Review [reviewId=" + reviewId + ", comments=" + comments + ", creationTime=" + creationTime
 				+ ", userId=" + userId + ", blog=" + blogId + "]";
 	}
-
-	
-	
 }

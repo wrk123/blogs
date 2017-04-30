@@ -1,22 +1,11 @@
 package com.blogspot.app.controller;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.blogspot.app.model.User;
-import com.blogspot.app.model.Blog;
-import com.blogspot.app.model.Review;
-import com.blogspot.app.model.SessionToken;
-import com.blogspot.app.repository.UserRepository;
-import com.blogspot.app.repository.BlogRepository;
-import com.blogspot.app.repository.ReviewRepository;
-import com.blogspot.app.repository.SessionTokenRepository;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import com.blogspot.app.model.Blog;
+import com.blogspot.app.model.Review;
+import com.blogspot.app.model.SessionToken;
+import com.blogspot.app.model.User;
+import com.blogspot.app.repository.BlogRepository;
+import com.blogspot.app.repository.ReviewRepository;
+import com.blogspot.app.repository.SessionTokenRepository;
+import com.blogspot.app.repository.UserRepository;
 
 
 @RestController
@@ -75,7 +69,7 @@ public class BlogController {
 			//in case of new blog 
 			if(blogDetails.getBlogId()==null){
 				 if(!blogDetails.getDraft())
-					   publishDate =new Date();
+					   publishDate = new Date();
 				 else 		
 					 blogDetails.setIsActive(false);
 					

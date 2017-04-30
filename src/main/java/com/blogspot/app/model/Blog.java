@@ -96,8 +96,6 @@ public class Blog {
 		this.blogContent = blogContent;
 	}
 	
-	
-	
 	public Long getUserId() {
 		return userId;
 	}

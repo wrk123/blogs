@@ -51,27 +51,25 @@ public class User implements Serializable{
 	  
 	  private Integer credit; 
 	
-	  public User() {
-		// TODO Auto-generated constructor stub
-	  }
+	  public User() {  }
 	  
 	 
 
-	public User( String email, String name, String contact, Date creationTime,
-			Date lastModifiedTime, String password,Integer credit) {
-		super();
-		this.email = email;
-		this.name = name;
-		this.contact = contact;
-		this.creationTime = creationTime;
-		this.lastModifiedTime = lastModifiedTime;
-		this.password = password;
-		this.credit=credit;
-	}
+		public User( String email, String name, String contact, Date creationTime,
+				Date lastModifiedTime, String password,Integer credit) {
+			super();
+			this.email = email;
+			this.name = name;
+			this.contact = contact;
+			this.creationTime = creationTime;
+			this.lastModifiedTime = lastModifiedTime;
+			this.password = password;
+			this.credit=credit;
+		}
 
 	 
 
-	public long getId() {
+		public long getId() {
 			return id;
 		}
 		

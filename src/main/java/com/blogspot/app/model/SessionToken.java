@@ -107,8 +107,5 @@ public class SessionToken {
 		return "SessionToken [sessionId=" + sessionId + ", userId=" + userId + ", lastModifiedTime=" + lastModifiedTime
 				+ ", authToken=" + authToken + ", user=" + userObj + "]";
 	}
-
-	
-	
 	
 }
